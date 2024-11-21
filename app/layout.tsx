@@ -10,6 +10,7 @@ import SheetProvider from "@/providers/sheet-providres";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Toaster } from "@/components/ui/sonner";
 import DialogProviders from "@/providers/dialog-providers";
+import { Analytics } from "@vercel/analytics/react"
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -51,6 +52,7 @@ export default function RootLayout({
             <DialogProviders />
             <Toaster />
             {children}
+            <Analytics />
           </QueryClientProvider>
         </body>
       </html>
