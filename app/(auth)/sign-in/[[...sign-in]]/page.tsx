@@ -8,7 +8,7 @@ export default function SignInPage() {
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 h-screen w-screen">
         <div className="flex flex-col justify-center h-full w-full ">
-          <h2 className="font-bold text-center text-slate-900 text-2xl lg:text-3xl">Welcome To Nextvul Cafe App</h2>
+          <h2 className="font-bold text-center text-slate-900 text-2xl lg:text-3xl">Welcome To Fatkid Chef App</h2>
           <p className="text-muted-foreground text-center mb-3 mt-1">Please sign-in or sign-up to use this powerfull app</p>
           <div className="flex justify-center items-center pt-2">
             <ClerkLoaded>
