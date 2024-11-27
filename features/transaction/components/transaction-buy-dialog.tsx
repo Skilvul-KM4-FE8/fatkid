@@ -104,10 +104,12 @@ const TransactionBuyDialog = () => {
     },
   });
 
+  const [customer, setCustomer] = useState("");
+
   const receipt = (
     <Printer type="epson" width={58} characterSet="korea" debug={true}>
-      {/* <Row left="Resepsionis" right={auth.user?.fullName || "Waiter Tidak Diketahui"} />
-      <Row left="Pelanggan" right={values.customer || "Pelanggan Tidak Diketahui"} />
+      <Row left="Resepsionis" right={auth.user?.fullName || "Waiter Tidak Diketahui"} />
+      <Row left="Pelanggan" right={customer || "Pelanggan Tidak Diketahui"} />
       <Line />
       {menu.map((item, index) => (
         <Row
@@ -126,9 +128,9 @@ const TransactionBuyDialog = () => {
       <Line />
       <Text align="center">Terima kasih telah memesan!</Text>
 
-      <Cut /> */}
+      <Cut />
 
-      <Text size={{ width: 2, height: 2 }}>9,500 IDR</Text>
+      {/* <Text size={{ width: 2, height: 2 }}>9,500 IDR</Text>
       <Text bold={true}>Pembayaran Selesai</Text>
       <Br />
       <Line />
@@ -154,7 +156,7 @@ const TransactionBuyDialog = () => {
       <Row gap={1} left={<Text size={{ width: 2, height: 2 }}>PO</Text>} center={<Text size={{ width: 2, height: 2 }}>Aloha Poké Makanan Enak</Text>} right="X 15" />
       <Line />
       <Br />
-      <Text align="center">Wifi: some-wifi / PW: 123123</Text>
+      <Text align="center">Wifi: some-wifi / PW: 123123</Text> */}
       <Cut />
     </Printer>
   );
