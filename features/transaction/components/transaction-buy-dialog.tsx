@@ -20,6 +20,9 @@ import { config } from "@/middleware";
 import { Minus, Plus } from "lucide-react";
 import { useCreateTransaction } from "../api/use-create-transaction";
 
+import { useMutation } from "@tanstack/react-query";
+import { Br, Cut, Line, Printer, Row, Text, render } from "react-thermal-printer";
+
 const TransactionBuyDialog = () => {
   const { isOpen, onOpen, onClose, menu } = useBuyDialog();
   const createMutation = useCreateTransaction();
@@ -80,6 +83,81 @@ const TransactionBuyDialog = () => {
   }
 
   // Printer Config
+
+  const [port, setPort] = useState<SerialPort>();
+  const { mutateAsync: print, isPending: isPrinting } = useMutation({
+    mutationFn: async () => {
+      let _port = port;
+      if (_port == null) {
+        _port = await navigator.serial.requestPort();
+        await _port.open({ baudRate: 9600 });
+        setPort(_port);
+      }
+
+      const writer = _port.writable?.getWriter();
+      if (writer != null) {
+        const data = await render(receipt);
+
+        await writer.write(data);
+        writer.releaseLock();
+      }
+    },
+  });
+
+  const receipt = (
+    <Printer type="epson" width={58} characterSet="korea" debug={true}>
+      {/* <Row left="Resepsionis" right={auth.user?.fullName || "Waiter Tidak Diketahui"} />
+      <Row left="Pelanggan" right={values.customer || "Pelanggan Tidak Diketahui"} />
+      <Line />
+      {menu.map((item, index) => (
+        <Row
+          key={index}
+          left={
+            <Text bold={true}>
+              {item.name} X {quantities[index]}
+            </Text>
+          }
+          right={`Rp. ${item.price * quantities[index]}`}
+        />
+      ))}
+      <Br />
+      <Line />
+      <Row left={<Text bold={true}>Total Harga</Text>} right={<Text underline="1dot-thick">Rp. {total}</Text>} />
+      <Line />
+      <Text align="center">Terima kasih telah memesan!</Text>
+
+      <Cut /> */}
+
+      <Text size={{ width: 2, height: 2 }}>9,500 IDR</Text>
+      <Text bold={true}>Pembayaran Selesai</Text>
+      <Br />
+      <Line />
+      <Row left="Metode Pembayaran" right="Kartu Debit" />
+      <Row left="Nomor Kartu" right="123456**********" />
+      <Row left="Durasi Cicilan" right="Pembayaran Sekaligus" />
+      <Row left="Jumlah Pembayaran" right="9,500" />
+      <Row left="Pajak" right="863" />
+      <Row left="Harga Pokok" right="8,637" />
+      <Line />
+      <Row left={<Text bold={true}>Teh Jagung Manis X 2</Text>} right="11,000" />
+      <Text> Opsi1(500)/Opsi2/"Catatan"</Text>
+      <Row left=" (-) Diskon" right="- 500" />
+      <Br />
+      <Line />
+      <Row left={<Text bold={true}>Total</Text>} right={<Text underline="1dot-thick">9,500</Text>} />
+      <Row left="(-) Diskon 2%" right="- 1,000" />
+      <Line />
+      <Row left="Nama Pemilik" right="Kim Pemilik" />
+      <Row left="Nomor Registrasi Bisnis" right="000-00-00000" />
+      <Row left="Nomor Perwakilan" right="0000-0000" />
+      <Row left="Alamat" right="Kota Apa, Distrik Apa, Desa Apa, Blok Berapa" />
+      <Row gap={1} left={<Text size={{ width: 2, height: 2 }}>PO</Text>} center={<Text size={{ width: 2, height: 2 }}>Aloha Poké Makanan Enak</Text>} right="X 15" />
+      <Line />
+      <Br />
+      <Text align="center">Wifi: some-wifi / PW: 123123</Text>
+      <Cut />
+    </Printer>
+  );
 
   return (
     <>
@@ -173,9 +251,9 @@ const TransactionBuyDialog = () => {
                     Submit
                   </Button>
 
-                  {/* <Button variant="outline" type="button" disabled={isPrinting} onClick={() => print()}>
+                  <Button variant="outline" type="button" disabled={isPrinting} onClick={() => print()}>
                     {isPrinting ? "Select Printer" : "Print"}
-                  </Button> */}
+                  </Button>
                 </form>
               </Form>
             </DialogDescription>
