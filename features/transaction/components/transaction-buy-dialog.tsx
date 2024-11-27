@@ -22,7 +22,7 @@ import { useCreateTransaction } from "../api/use-create-transaction";
 
 const TransactionBuyDialog = () => {
   const { isOpen, onOpen, onClose, menu } = useBuyDialog();
-  const createMutation = useCreateTransaction()
+  const createMutation = useCreateTransaction();
   const auth = useUser();
 
   // State for quantity per item, initialized to 1 for all menu items
@@ -73,11 +73,13 @@ const TransactionBuyDialog = () => {
     };
     console.log(orderData);
     createMutation.mutate(orderData, {
-        onSuccess: () => {
-            onClose()
-        }
-    })
+      onSuccess: () => {
+        onClose();
+      },
+    });
   }
+
+  // Printer Config
 
   return (
     <>
@@ -165,10 +167,15 @@ const TransactionBuyDialog = () => {
                     </TableBody>
                   </Table>
                   {/* Display total price */}
-                  <p className="text-right mr-4 font-bold text-slate-900">Total: Rp.{total}</p>
-                  <Button type="submit" className="mx-auto inline-block" disabled={createMutation.isPending}>
+                  <p className="text-right mr-4 text-2xl border  font-bold text-slate-900">Total: Rp.{total}</p>
+
+                  <Button type="submit" className="mx-auto mr-2  inline-block" disabled={createMutation.isPending}>
                     Submit
                   </Button>
+
+                  {/* <Button variant="outline" type="button" disabled={isPrinting} onClick={() => print()}>
+                    {isPrinting ? "Select Printer" : "Print"}
+                  </Button> */}
                 </form>
               </Form>
             </DialogDescription>
