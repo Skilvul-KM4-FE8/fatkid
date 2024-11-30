@@ -1,89 +1,107 @@
-import { useMutation } from "@tanstack/react-query";
-import { Br, Cut, Line, Printer, Row, Text, render } from "react-thermal-printer";
-import nextvulWhite from "@/public/nextvulWhite.svg";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-// Props type
+// Tipe Props
 interface PrintProps {
-  authUser?: string; // Nama resepsionis
+  authUser?: string; // Nama pengguna yang mencetak
   customerName: string; // Nama pelanggan
-  menu: { name: string; price: number, quantity: number, id: string }[]; // Daftar menu
-  // quantities: number[]; // Kuantitas masing-masing item
-  total: number; // Total harga
+  menu: { name: string; price: number; quantity: number; id: string }[]; // Daftar menu
+  total: number; // Total pembayaran
 }
 
 const Print = ({ authUser = "Waiter Tidak Diketahui", customerName, menu, total }: PrintProps) => {
-  const [port, setPort] = useState<SerialPort | null>(null);
+  const [isPrinting, setIsPrinting] = useState(false);
 
-  // const isPrinting = false;
+  // Format teks untuk resi
+  const formatReceiptText = () => {
+    const separator = "-".repeat(32);
 
-  // Mutasi untuk mencetak
-  const { mutateAsync: print, isPending: isPrinting } = useMutation({
-    mutationFn: async () => {
-      let _port = port;
-      if (!_port) {
-        _port = await navigator.serial.requestPort();
-        await _port.open({ baudRate: 9600 });
-        setPort(_port);
+    // Format tanggal saat ini
+    const now = new Date();
+    const formattedDate = now.toLocaleString("id-ID", {
+      dateStyle: "full",
+      timeStyle: "short",
+    });
+
+    return `
+FATKID CATERING
+${separator}
+PEGAWAI      : ${authUser}
+PELANGGAN    : ${customerName || "Pelanggan Tidak Diketahui"}
+TANGGAL      : ${formattedDate}
+${separator}
+
+PESANAN:
+${menu
+  .map(
+    (item) => `${item.name.substring(0, 20).padEnd(20)}  
+${item.quantity} x Rp ${item.price.toLocaleString()} = Rp ${(item.price * item.quantity).toLocaleString()}`
+  )
+  .join("\n")}
+
+${separator}
+TOTAL BAYAR  : Rp ${total.toLocaleString()}
+${separator}
+UNTUK PEMESANAN HUBUNGI:
+0813-1805-3671 (FATKID)
+@fatkid.catering (Instagram)
+${"\n".repeat(3)}
+TERIMA KASIH TELAH BERBELANJA DI FATKID CATERING!
+
+
+`.trim();
+  };
+
+  // Fungsi untuk mencetak
+  const handlePrint = async () => {
+    try {
+      setIsPrinting(true);
+      console.log("Memulai proses pencetakan...");
+
+      // Meminta akses port serial
+      const port = await navigator.serial.requestPort();
+
+      // Membuka koneksi ke printer
+      await port.open({
+        baudRate: 9600, // Standar baud rate printer termal
+        dataBits: 8,
+        stopBits: 1,
+        parity: "none",
+      });
+
+      // Mendapatkan writer
+      if (!port.writable) {
+        throw new Error("Port tidak dapat ditulisi.");
       }
+      const writer = port.writable.getWriter();
 
-      const writer = _port?.writable?.getWriter();
-      if (writer) {
-        const data = await render(receipt);
-        await writer.write(data);
-        writer.releaseLock();
-      }
-    },
-  });
+      // Mengonversi teks resi menjadi byte array
+      const encoder = new TextEncoder();
+      const receiptData = encoder.encode(formatReceiptText());
 
-  // Komponen struk yang dirender
-  const receipt = (
-    <Printer type="epson" width={58} characterSet="korea" debug={true}>
-      <img style={{ display: "block", margin: "0 auto" }} src={nextvulWhite} alt="Logo" />
-      <Row left="Resepsionis" right={authUser} />
-      <Row left="Pelanggan" right={customerName || "Pelanggan Tidak Diketahui"} />
-      <Line />
-      {menu.map((item, index) => (
-        <Row
-          key={index}
-          left={
-            <Text bold={true}>
-              {item.name} X {item.quantity}
-              {/* {item.name} X {quantities[index]} */}
-            </Text>
-          }
-          right={`Rp. ${item.price * item.quantity}`}
-          // right={`Rp. ${item.price * quantities[index]}`}
-        />
-      ))}
-      <Br />
-      <Line />
-      <Row left={<Text bold={true}>Total Harga</Text>} right={<Text underline="1dot-thick">Rp. {total}</Text>} />
-      <Line />
-      <Text align="center">Terima kasih telah memesan!</Text>
-      <Cut />
-    </Printer>
-  );
+      // Menulis data ke printer
+      await writer.write(receiptData);
 
-  // const print = async () => {
-  //   console.log({
-  //     authUser,
-  //     customerName,
-  //     menu,
-  //     total,
-  //   })
-  // }
+      // Perintah untuk memotong kertas (jika didukung printer)
+      const cutPaperCommand = new Uint8Array([0x1d, 0x56, 0x01]);
+      await writer.write(cutPaperCommand);
 
+      // Melepaskan writer dan menutup koneksi
+      writer.releaseLock();
+      await port.close();
+      console.log("Pencetakan selesai.");
+    } catch (error) {
+      console.error("Terjadi kesalahan saat mencetak:", error);
+      alert("Gagal mencetak. Pastikan printer terhubung dengan benar.");
+    } finally {
+      setIsPrinting(false);
+    }
+  };
+
+  // Komponen tombol untuk memulai pencetakan
   return (
-    <Button
-      type="button"
-      variant={"outline"}
-      onClick={() => print()}
-      disabled={isPrinting}
-      // className="px-4 py-2 bg-blue-500 text-white rounded"
-    >
-      {isPrinting ? "Mencetak..." : "Cetak"}
+    <Button type="button" variant="outline" onClick={handlePrint} disabled={isPrinting}>
+      {isPrinting ? "Sedang Mencetak..." : "Cetak Resi"}
     </Button>
   );
 };
