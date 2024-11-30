@@ -10,9 +10,9 @@ import { useSearchParams } from "next/navigation";
 
 export default function MenuPage() {
   const transactions = useGetOverview();
-  const searchParams = useSearchParams()
-  const from = searchParams.get("from")
-  const to = searchParams.get("to")
+  const searchParams = useSearchParams();
+  const from = searchParams?.get("from");
+  const to = searchParams?.get("to");
 
   // Use useMemo to memoize transactionData
   const transactionData = useMemo(() => transactions.data || [], [transactions.data]);
@@ -51,19 +51,19 @@ export default function MenuPage() {
 
   return (
     <>
-    <div className="mx-auto max-w-screen-2xl w-full pb-10 -mt-24">
-    <div>
-      <DatePicker />
-    </div>
-      <div className="mx-auto grid grid-cols-1 lg:grid-cols-3 w-full gap-8">
-        <SummaryCard disabled={transactions.isLoading} data={totalSale} title="Total Sale" tipe="" from={from} to={to} />
-        <SummaryCard disabled={transactions.isLoading} data={totalTransaction} title="Total Transaction" tipe="Transactions" from={from} to={to} />
-        <SummaryCard disabled={transactions.isLoading} data={soldMenu} title="Total Menu Sold" tipe="Menus" from={from} to={to} />
+      <div className="mx-auto max-w-screen-2xl w-full pb-10 -mt-24">
+        <div>
+          <DatePicker />
+        </div>
+        <div className="mx-auto grid grid-cols-1 lg:grid-cols-3 w-full gap-8">
+          <SummaryCard disabled={transactions.isLoading} data={totalSale} title="Total Sale" tipe="" from={from} to={to} />
+          <SummaryCard disabled={transactions.isLoading} data={totalTransaction} title="Total Transaction" tipe="Transactions" from={from} to={to} />
+          <SummaryCard disabled={transactions.isLoading} data={soldMenu} title="Total Menu Sold" tipe="Menus" from={from} to={to} />
+        </div>
+        <div className="mt-10">
+          <Chart data={fixedData} disabled={transactions.isLoading} />
+        </div>
       </div>
-      <div className="mt-10">
-        <Chart data={fixedData} disabled={transactions.isLoading} />
-      </div>
-    </div>
     </>
   );
 }
