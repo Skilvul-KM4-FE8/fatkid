@@ -25,9 +25,9 @@ import { set } from "date-fns";
 type OrderDataType = {
   receptionist: string;
   customer: string;
-  items: { id: string, name: string; price: number; quantity: number }[];
+  items: { id: string; name: string; price: number; quantity: number }[];
   totalPrice: number;
-}
+};
 
 const TransactionBuyDialog = () => {
   const { isOpen, onOpen, onClose, menu } = useBuyDialog();
@@ -59,7 +59,7 @@ const TransactionBuyDialog = () => {
     name: item.name,
     quantity: quantities[index],
     price: item.price * quantities[index],
-  }))
+  }));
 
   // calculate total price based on quantities
   const total = menu.reduce((acc, item, index) => acc + item.price * quantities[index], 0);
@@ -126,7 +126,7 @@ const TransactionBuyDialog = () => {
                       <FormItem>
                         <FormLabel className="font-semibold text-slate-900">Customer Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Customer Name" onChange={e => setCustomerName(e.target.value)} />
+                          <Input placeholder="Customer Name" onChange={(e) => setCustomerName(e.target.value)} />
                         </FormControl>
                         {/* <FormDescription>
                                         This is your public display name.
@@ -202,7 +202,7 @@ const TransactionBuyDialog = () => {
                     {isPrinting ? "Select Printer" : "Print"}
                   </Button> */}
                   {/* {submited && ( */}
-                    <Print authUser={auth.user?.fullName||"unknown"} customerName={customerName} menu={menuFix} total={total} />
+                  <Print authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} />
                   {/* )} */}
                 </form>
               </Form>
