@@ -13,7 +13,7 @@ export const DatePicker = () => {
 
   // Initialize date range with today's date and 20 days ahead
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: addDays(new Date(), -60),
+    from: addDays(new Date(), -30),
     to: new Date(),
   });
 

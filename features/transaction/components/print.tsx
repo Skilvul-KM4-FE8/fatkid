@@ -30,20 +30,20 @@ PEGAWAI      : ${authUser}
 PELANGGAN    : ${customerName || "Pelanggan Tidak Diketahui"}
 TANGGAL      : ${formattedDate}
 ${separator}
-
 PESANAN:
+
 ${menu
   .map(
     (item) => `${item.name.substring(0, 20).padEnd(20)}  
 ${item.quantity} x Rp ${item.price.toLocaleString()} = Rp ${(item.price * item.quantity).toLocaleString()}`
   )
   .join("\n")}
-
+  
 ${separator}
 TOTAL BAYAR  : Rp ${total.toLocaleString()}
 ${separator}
 UNTUK PEMESANAN HUBUNGI:
-0813-1805-3671 (FATKID)
+0813-1805-3671 (WhatsApp)
 @fatkid.catering (Instagram)
 ${"\n".repeat(3)}
 TERIMA KASIH TELAH BERBELANJA DI FATKID CATERING!

@@ -192,7 +192,13 @@ const TransactionBuyDialog = () => {
                     </TableBody>
                   </Table>
                   {/* Display total price */}
-                  <p className="text-right mr-4 text-2xl border  font-bold text-slate-900">Total: Rp.{total}</p>
+                  <p className="text-right mr-4 text-2xl font-bold text-slate-900">
+                    Total: Rp
+                    {total.toLocaleString("id-ID", {
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    })}
+                  </p>
 
                   <Button type="submit" className="mx-auto mr-2  inline-block" disabled={createMutation.isPending}>
                     Submit
