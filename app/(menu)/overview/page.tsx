@@ -2,7 +2,6 @@
 import { Suspense, useEffect, useState, useMemo } from "react";
 import { SummaryCard } from "@/components/summary-card";
 import { Chart } from "@/components/chart";
-
 import { useGetOverview } from "@/features/overview/api/use-get-overview";
 import { format } from "date-fns";
 import { DatePicker } from "@/components/date-picker";
@@ -11,13 +10,25 @@ import { useSearchParams } from "next/navigation";
 export default function MenuPage() {
   const transactions = useGetOverview();
   const searchParams = useSearchParams();
-  const from = searchParams?.get("from");
-  const to = searchParams?.get("to");
 
+  // Local state to store 'from' and 'to' query params
+  const [dateRange, setDateRange] = useState<{ from: string | null; to: string | null }>({ from: null, to: null });
+
+  // Update state when searchParams changes
+  useEffect(() => {
+    const from = searchParams.get("from");
+    const to = searchParams.get("to");
+    setDateRange({ from, to });
+  }, [searchParams]);
+
+  const { from, to } = dateRange;
+
+  // Memoize the transaction data to avoid unnecessary recalculations
   const transactionData = useMemo(() => transactions.data || [], [transactions.data]);
+
   const [soldMenu, setSoldMenu] = useState(0);
 
-  const totalSale = transactionData.length > 0 ? transactionData?.reduce((acc: any, item: any) => acc + item.totalPrice, 0) : 0;
+  const totalSale = transactionData.length > 0 ? transactionData.reduce((acc: any, item: any) => acc + item.totalPrice, 0) : 0;
   const totalTransaction = transactionData.length;
 
   useEffect(() => {
