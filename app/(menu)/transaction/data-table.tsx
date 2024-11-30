@@ -49,7 +49,7 @@ export function DataTable<TData, TValue>({ columns, data, disabled, onDelete }: 
     const selectedRowsExcel = table.getSelectedRowModel().rows;
     console.log(selectedRowsExcel.map((row) => row.original));
     const selectedRowParsingExcel = selectedRowsExcel.map((row) => row.original);
-    tsXLXS().exportAsExcelFile(selectedRowParsingExcel).saveAsExcelFile("Transaction Data");
+    tsXLXS().exportAsExcelFile(selectedRowParsingExcel).saveAsExcelFile(`Transaction Data ${new Date().toLocaleDateString()} Jam ${new Date().toLocaleTimeString()}`);
   };
 
   return (

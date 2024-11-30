@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useMemo } from "react";
+import { Suspense, useEffect, useState, useMemo } from "react";
 import { SummaryCard } from "@/components/summary-card";
 import { Chart } from "@/components/chart";
 
@@ -14,10 +14,7 @@ export default function MenuPage() {
   const from = searchParams?.get("from");
   const to = searchParams?.get("to");
 
-  // Use useMemo to memoize transactionData
   const transactionData = useMemo(() => transactions.data || [], [transactions.data]);
-  // console.log(transactionData);
-
   const [soldMenu, setSoldMenu] = useState(0);
 
   const totalSale = transactionData.length > 0 ? transactionData?.reduce((acc: any, item: any) => acc + item.totalPrice, 0) : 0;
@@ -50,7 +47,7 @@ export default function MenuPage() {
   }, [transactionData]);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="mx-auto max-w-screen-2xl w-full pb-10 -mt-24">
         <div>
           <DatePicker />
@@ -64,6 +61,6 @@ export default function MenuPage() {
           <Chart data={fixedData} disabled={transactions.isLoading} />
         </div>
       </div>
-    </>
+    </Suspense>
   );
 }

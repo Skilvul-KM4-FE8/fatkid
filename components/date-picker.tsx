@@ -9,24 +9,26 @@ import { DateRange } from "react-day-picker";
 import { useRouter } from "next/navigation";
 
 export const DatePicker = () => {
+  const router = useRouter();
 
-  const router = useRouter()
-
+  // Initialize date range with today's date and 20 days ahead
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+    from: addDays(new Date(), -60),
+    to: new Date(),
   });
 
-  const isDisabled = !date?.from || !date?.to 
+  const isDisabled = !date?.from || !date?.to;
 
+  // Handle filtering by date
   const handleFilterDate = () => {
-    router.push(`?from=${format(date?.from as Date, "yyyy-MM-dd")}&to=${format(date?.to as Date, "yyyy-MM-dd")}`)
-  }
+    router.push(`?from=${format(date?.from as Date, "yyyy-MM-dd")}&to=${format(date?.to as Date, "yyyy-MM-dd")}`);
+  };
 
+  // Handle resetting date range
   const handleReset = () => {
-    setDate(undefined)
-    router.replace(`/overview`)
-  }
+    setDate(undefined);
+    router.replace(`/overview`);
+  };
 
   return (
     <>
@@ -51,8 +53,12 @@ export const DatePicker = () => {
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar initialFocus mode="range" defaultMonth={date?.from} selected={date} onSelect={setDate} numberOfMonths={2} />
             <div className="mx-3 flex pb-4 gap-2">
-                <Button variant={"outline"} onClick={handleReset}>Reset</Button>
-                <Button disabled={isDisabled} onClick={handleFilterDate}>Set Date</Button>
+              <Button variant={"outline"} onClick={handleReset}>
+                Reset
+              </Button>
+              <Button disabled={isDisabled} onClick={handleFilterDate}>
+                Set Date
+              </Button>
             </div>
           </PopoverContent>
         </Popover>
