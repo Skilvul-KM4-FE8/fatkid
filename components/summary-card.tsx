@@ -1,21 +1,29 @@
 import { Wallet } from "lucide-react"
 import { Skeleton } from "./ui/skeleton"
 import CountUp from 'react-countup';
+import { format, subDays } from "date-fns";
 
 type SummaryCardProps = {
     disabled: boolean;
     data: number ;
     title: string;
-    tipe?: string
+    tipe?: string;
+    from?: string | null | undefined;
+    to?: string | null | undefined;
 }
 
-export const SummaryCard = ({disabled, data, title, tipe}:SummaryCardProps) => {
+export const SummaryCard = ({disabled, data, title, tipe, from, to}:SummaryCardProps) => {
+  const sub30 = subDays(new Date(), 30)
+  const now = new Date()
+  const parsedNow = format(now, "d MMMM y")
+  const parsed = format(sub30, "d MMMM y")
+
     return (
         <div className="rounded-md bg-white px-6 py-8 drop-shadow-md">
           <div className="flex justify-between">
             <div>
             <p className="font-bold text-xl">{title}</p>
-            <p className="text-muted-foreground">October 2024 - Now</p>
+            <p className="text-muted-foreground">{!from ? parsed : format(from, "d MMMM y")} - {!to ? parsedNow : format(to, "d MMMM y")}</p>
             </div>
             <div className="flex justify-center items-center p-5 rounded-md bg-violet-300/30">
               <Wallet className="size-5 text-slate-800" />

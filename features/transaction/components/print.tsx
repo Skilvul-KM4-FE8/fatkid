@@ -2,18 +2,21 @@ import { useMutation } from "@tanstack/react-query";
 import { Br, Cut, Line, Printer, Row, Text, render } from "react-thermal-printer";
 import nextvulWhite from "@/public/nextvulWhite.svg";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 // Props type
 interface PrintProps {
   authUser?: string; // Nama resepsionis
   customerName: string; // Nama pelanggan
-  menu: { name: string; price: number }[]; // Daftar menu
-  quantities: number[]; // Kuantitas masing-masing item
+  menu: { name: string; price: number, quantity: number, id: string }[]; // Daftar menu
+  // quantities: number[]; // Kuantitas masing-masing item
   total: number; // Total harga
 }
 
-const Print = ({ authUser = "Waiter Tidak Diketahui", customerName, menu, quantities, total }: PrintProps) => {
+const Print = ({ authUser = "Waiter Tidak Diketahui", customerName, menu, total }: PrintProps) => {
   const [port, setPort] = useState<SerialPort | null>(null);
+
+  // const isPrinting = false;
 
   // Mutasi untuk mencetak
   const { mutateAsync: print, isPending: isPrinting } = useMutation({
@@ -46,10 +49,12 @@ const Print = ({ authUser = "Waiter Tidak Diketahui", customerName, menu, quanti
           key={index}
           left={
             <Text bold={true}>
-              {item.name} X {quantities[index]}
+              {item.name} X {item.quantity}
+              {/* {item.name} X {quantities[index]} */}
             </Text>
           }
-          right={`Rp. ${item.price * quantities[index]}`}
+          right={`Rp. ${item.price * item.quantity}`}
+          // right={`Rp. ${item.price * quantities[index]}`}
         />
       ))}
       <Br />
@@ -61,15 +66,25 @@ const Print = ({ authUser = "Waiter Tidak Diketahui", customerName, menu, quanti
     </Printer>
   );
 
+  // const print = async () => {
+  //   console.log({
+  //     authUser,
+  //     customerName,
+  //     menu,
+  //     total,
+  //   })
+  // }
+
   return (
-    <button
+    <Button
       type="button"
+      variant={"outline"}
       onClick={() => print()}
       disabled={isPrinting}
-      className="px-4 py-2 bg-blue-500 text-white rounded"
+      // className="px-4 py-2 bg-blue-500 text-white rounded"
     >
       {isPrinting ? "Mencetak..." : "Cetak"}
-    </button>
+    </Button>
   );
 };
 

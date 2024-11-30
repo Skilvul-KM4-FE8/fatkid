@@ -19,11 +19,23 @@ import { useEffect, useState } from "react";
 import { config } from "@/middleware";
 import { Minus, Plus } from "lucide-react";
 import { useCreateTransaction } from "../api/use-create-transaction";
+import Print from "./print";
+import { set } from "date-fns";
+
+type OrderDataType = {
+  receptionist: string;
+  customer: string;
+  items: { id: string, name: string; price: number; quantity: number }[];
+  totalPrice: number;
+}
 
 const TransactionBuyDialog = () => {
   const { isOpen, onOpen, onClose, menu } = useBuyDialog();
   const createMutation = useCreateTransaction();
   const auth = useUser();
+  const [customerName, setCustomerName] = useState<string>("");
+  const [orderData, setOrderData] = useState<any>(null);
+  const [submited, setSubmited] = useState<boolean>(false);
 
   // State for quantity per item, initialized to 1 for all menu items
   const [quantities, setQuantities] = useState<number[]>([]);
@@ -42,6 +54,13 @@ const TransactionBuyDialog = () => {
     setQuantities(newQuantities);
   };
 
+  const menuFix = menu.map((item, index) => ({
+    ...item,
+    name: item.name,
+    quantity: quantities[index],
+    price: item.price * quantities[index],
+  }))
+
   // calculate total price based on quantities
   const total = menu.reduce((acc, item, index) => acc + item.price * quantities[index], 0);
   // const total = menu.reduce((acc, item) => acc + item.price, 0)
@@ -55,12 +74,13 @@ const TransactionBuyDialog = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+    setCustomerName(values.customer);
 
-    const orderData = {
+    const orderData: OrderDataType = {
       receptionist: auth.user?.fullName || "Unknown Waiter",
       customer: values.customer,
       items: menu.map((item, index) => ({
@@ -71,6 +91,11 @@ const TransactionBuyDialog = () => {
       })),
       totalPrice: total,
     };
+
+    setOrderData(orderData);
+
+    setSubmited(true);
+
     console.log(orderData);
     createMutation.mutate(orderData, {
       onSuccess: () => {
@@ -101,7 +126,7 @@ const TransactionBuyDialog = () => {
                       <FormItem>
                         <FormLabel className="font-semibold text-slate-900">Customer Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Customer Name" {...field} />
+                          <Input placeholder="Customer Name" onChange={e => setCustomerName(e.target.value)} />
                         </FormControl>
                         {/* <FormDescription>
                                         This is your public display name.
@@ -176,6 +201,9 @@ const TransactionBuyDialog = () => {
                   {/* <Button variant="outline" type="button" disabled={isPrinting} onClick={() => print()}>
                     {isPrinting ? "Select Printer" : "Print"}
                   </Button> */}
+                  {/* {submited && ( */}
+                    <Print authUser={auth.user?.fullName||"unknown"} customerName={customerName} menu={menuFix} total={total} />
+                  {/* )} */}
                 </form>
               </Form>
             </DialogDescription>
