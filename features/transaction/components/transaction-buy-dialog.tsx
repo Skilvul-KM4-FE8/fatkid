@@ -83,7 +83,7 @@ const TransactionBuyDialog = () => {
     const orderData: OrderDataType = {
       receptionist: auth.user?.fullName || "Unknown Waiter",
       customer: values.customer,
-      items: menu.map((item, index) => ({
+      items: menu.map((item, index) => ({ 
         ...item,
         name: item.name,
         quantity: quantities[index],
