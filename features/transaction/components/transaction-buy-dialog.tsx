@@ -4,9 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-const formSchema = z.object({
-  customer: z.string().min(2).max(50),
-});
+
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import useBuyDialog from "../hooks/use-buy-dialog";
 import { Button } from "@/components/ui/button";
@@ -21,6 +19,10 @@ import { Minus, Plus } from "lucide-react";
 import { useCreateTransaction } from "../api/use-create-transaction";
 import Print from "./print";
 import { set } from "date-fns";
+
+const formSchema = z.object({
+  customer: z.string().min(2).max(50),
+});
 
 type OrderDataType = {
   receptionist: string;
@@ -126,7 +128,14 @@ const TransactionBuyDialog = () => {
                       <FormItem>
                         <FormLabel className="font-semibold text-slate-900">Customer Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Customer Name" onChange={(e) => setCustomerName(e.target.value)} />
+                          <Input 
+                            placeholder="Customer Name" 
+                            {...field} 
+                            onChange={(e) => {
+                              field.onChange(e); // Perbarui React Hook Form
+                              setCustomerName(e.target.value); // Perbarui state customerName
+                            }}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

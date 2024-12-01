@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { SummaryCard } from "@/components/summary-card";
 import { DatePicker } from "@/components/date-picker";
 import { Chart } from "@/components/chart";
@@ -58,20 +58,18 @@ export default function MenuPage() {
   }, [transactionData]);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="mx-auto max-w-screen-2xl w-full pb-10 -mt-24">
-        <div>
-          <DatePicker />
-        </div>
-        <div className="mx-auto grid grid-cols-1 lg:grid-cols-3 w-full gap-8">
-          <SummaryCard disabled={transactions.isLoading} data={totalSale} title="Total Sale" tipe="" from={from} to={to} />
-          <SummaryCard disabled={transactions.isLoading} data={totalTransaction} title="Total Transaction" tipe="Transactions" from={from} to={to} />
-          <SummaryCard disabled={transactions.isLoading} data={soldMenu} title="Total Menu Sold" tipe="Menus" from={from} to={to} />
-        </div>
-        <div className="mt-10">
-          <Chart data={fixedData} disabled={transactions.isLoading} />
-        </div>
+    <div className="mx-auto max-w-screen-2xl w-full pb-10 -mt-24">
+      <div>
+        <DatePicker />
       </div>
-    </Suspense>
+      <div className="mx-auto grid grid-cols-1 lg:grid-cols-3 w-full gap-8">
+        <SummaryCard disabled={transactions.isLoading} data={totalSale} title="Total Sale" tipe="" from={from} to={to} />
+        <SummaryCard disabled={transactions.isLoading} data={totalTransaction} title="Total Transaction" tipe="Transactions" from={from} to={to} />
+        <SummaryCard disabled={transactions.isLoading} data={soldMenu} title="Total Menu Sold" tipe="Menus" from={from} to={to} />
+      </div>
+      <div className="mt-10">
+        <Chart data={fixedData} disabled={transactions.isLoading} />
+      </div>
+    </div>
   );
 }
