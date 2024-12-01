@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 
-type OverviewLayoutProps = {
+type TransactionLayoutProps = {
   children: React.ReactNode;
 };
 
-const OverviewLayout = ({ children }: OverviewLayoutProps) => {
+const TransactionLayout = ({ children }: TransactionLayoutProps) => {
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
@@ -14,4 +14,4 @@ const OverviewLayout = ({ children }: OverviewLayoutProps) => {
   );
 };
 
-export default OverviewLayout;
+export default TransactionLayout;
