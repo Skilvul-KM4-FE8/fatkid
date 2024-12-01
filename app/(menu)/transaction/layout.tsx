@@ -1,3 +1,4 @@
+import TransactionSkeleton from "@/components/transaction-skeleton";
 import { Suspense } from "react";
 
 type TransactionLayoutProps = {
@@ -7,9 +8,7 @@ type TransactionLayoutProps = {
 const TransactionLayout = ({ children }: TransactionLayoutProps) => {
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
-        {children}
-      </Suspense>
+      <Suspense fallback={<TransactionSkeleton />}>{children}</Suspense>
     </>
   );
 };
