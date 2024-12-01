@@ -7,7 +7,6 @@ import { DataTable } from "@/app/(menu)/transaction/data-table";
 import { DatePicker } from "@/components/date-picker";
 import TransactionSkeleton from "@/components/transaction-skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useBulkDeleteTransaction } from "@/features/transaction/api/use-bulk-delete-transaction";
 import { useGetTransactions } from "@/features/transaction/api/use-get-transactions";
 import { useSearchParams } from "next/navigation";

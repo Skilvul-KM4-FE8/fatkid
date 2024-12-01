@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { SummaryCard } from "@/components/summary-card";
 import { DatePicker } from "@/components/date-picker";
 import { Chart } from "@/components/chart";
