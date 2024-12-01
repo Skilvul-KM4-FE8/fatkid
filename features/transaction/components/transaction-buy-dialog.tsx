@@ -10,9 +10,9 @@ const formSchema = z.object({
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import useBuyDialog from "../hooks/use-buy-dialog";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ import { set } from "date-fns";
 type OrderDataType = {
   receptionist: string;
   customer: string;
-  items: { id: string; name: string; price: number; quantity: number }[];
+  items: { id: string; name: string; price: number; quantity: number; originalPrice?: number }[];
   totalPrice: number;
 };
 
@@ -59,6 +59,7 @@ const TransactionBuyDialog = () => {
     name: item.name,
     quantity: quantities[index],
     price: item.price * quantities[index],
+    originalPrice: item.price,
   }));
 
   // calculate total price based on quantities
@@ -77,7 +78,6 @@ const TransactionBuyDialog = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
     setCustomerName(values.customer);
 
     const orderData: OrderDataType = {
@@ -128,15 +128,10 @@ const TransactionBuyDialog = () => {
                         <FormControl>
                           <Input placeholder="Customer Name" onChange={(e) => setCustomerName(e.target.value)} />
                         </FormControl>
-                        {/* <FormDescription>
-                                        This is your public display name.
-                                    </FormDescription> */}
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  {/* <Button type="submit">Submit</Button> */}
-
                   {/* Display table of menu items */}
                   <Table>
                     {/* <TableCaption>Your order summary.</TableCaption> */}

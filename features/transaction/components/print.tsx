@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 interface PrintProps {
   authUser?: string; // Nama pengguna yang mencetak
   customerName: string; // Nama pelanggan
-  menu: { name: string; price: number; quantity: number; id: string }[]; // Daftar menu
+  menu: { name: string; price: number; quantity: number; id: string; originalPrice: number }[]; // Daftar menu
   total: number; // Total pembayaran
 }
 
@@ -35,7 +35,7 @@ PESANAN:
 ${menu
   .map(
     (item) => `${item.name.substring(0, 20).padEnd(20)}  
-${item.quantity} x Rp ${item.price.toLocaleString()} = Rp ${(item.price * item.quantity).toLocaleString()}`
+${item.quantity} x Rp ${item.originalPrice.toLocaleString()} = Rp ${item.price.toLocaleString()}`
   )
   .join("\n")}
   
