@@ -4,7 +4,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import useBuyDialog from "../hooks/use-buy-dialog";
 import { Button } from "@/components/ui/button";
@@ -13,12 +12,14 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { config } from "@/middleware";
 import { Minus, Plus } from "lucide-react";
 import { useCreateTransaction } from "../api/use-create-transaction";
 import Print from "./print";
-import { set } from "date-fns";
+import { format, set } from "date-fns";
+
+import { useReactToPrint } from "react-to-print";
 
 const formSchema = z.object({
   customer: z.string().min(2).max(50),
@@ -31,6 +32,66 @@ type OrderDataType = {
   totalPrice: number;
 };
 
+interface PrintProps {
+  authUser?: string; // Nama pengguna yang mencetak
+  customerName: string; // Nama pelanggan
+  menu: { name: string; price: number; quantity: number; id: string }[]; // Daftar menu
+  total: number; // Total pembayaran
+}
+
+const RowPrint = ({left, right}: {left: any, right: any}) => {
+  return (
+    <div className="flex justify-between">
+      <p>{left}</p>
+      <p>{right}</p>
+    </div>
+  );
+}
+
+const PrintContent = ({ authUser, customerName, menu, total }:PrintProps) => {
+  return (
+    <div>
+      <div className="mx-2 my-3 border-b-4">
+        <img src="/Fatkid.png" width={100} height={100} />
+        <h1 className="text-2xl font-bold">FATKID CATERING</h1>
+      </div> 
+      <div className="border-b-4 mx-2 my-2">
+        <RowPrint left="PEGAWAI" right={authUser} />
+        <RowPrint left="PELANGGAN" right={customerName} />
+        <RowPrint left="Tanggal" right={format(new Date(), "yyy-MM-dd")} />
+      </div>
+      <div className="mx-2 my-1 border-b-4">
+        <h2 >PESANAN : </h2>
+      </div>
+      <div>
+        {menu.map((item, index: number) => (
+          <div className="border-b-2">
+            <RowPrint 
+              key={index}
+              left={`${item.name.substring(0, 20)} (${item.quantity}x Rp${item.price.toLocaleString()})`}
+              right={`Rp${(item.price * item.quantity).toLocaleString()}`}
+            />
+          </div>
+        ))}
+        {/* <RowPrint left="Nama Menu" right="Harga" /> */}
+      </div>
+      <div>
+        <RowPrint left="TOTAL BAYAR" right={`Rp${total.toLocaleString()}`} />
+      </div>
+      <div className="mx-2 my-1 border-b-4">
+        <h2>UNTUK PEMESANAN HUBUNGI : </h2>
+      </div>
+      <div>
+        <RowPrint left="0813-1805-3671 (FATKID)" right="" />
+        <RowPrint left="@fatkid.catering (Instagram)" right="" />
+      </div>
+      <div className="mx-2 my-1 border-b-4">
+        <h2>TERIMA KASIH TELAH BERBELANJA DI FATKID CATERING!</h2>
+      </div>
+    </div>
+  );
+};
+
 const TransactionBuyDialog = () => {
   const { isOpen, onOpen, onClose, menu } = useBuyDialog();
   const createMutation = useCreateTransaction();
@@ -41,6 +102,10 @@ const TransactionBuyDialog = () => {
 
   // State for quantity per item, initialized to 1 for all menu items
   const [quantities, setQuantities] = useState<number[]>([]);
+  
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleReactToPrint = useReactToPrint({contentRef})
 
   // When menu changes, set default quantity to 1 for each item
   useEffect(() => {
@@ -212,12 +277,25 @@ const TransactionBuyDialog = () => {
                     {isPrinting ? "Select Printer" : "Print"}
                   </Button> */}
                   {/* {submited && ( */}
-                  <Print 
+                  <Print
                     authUser={auth.user?.fullName || "unknown"} 
                     customerName={customerName} 
                     menu={menuFix} 
                     total={total} 
                   />
+                  <Button className="sm:hidden" variant="outline" type="button" onClick={() => handleReactToPrint()}>
+                    Print
+                  </Button>
+                  <div style={{display: "none"}}>
+                    <div ref={contentRef}>
+                      <PrintContent 
+                        authUser={auth.user?.fullName || "unknown"}
+                        customerName={customerName}
+                        menu={menuFix}
+                        total={total}
+                      />
+                    </div>
+                  </div>
                   {/* )} */}
                 </form>
               </Form>

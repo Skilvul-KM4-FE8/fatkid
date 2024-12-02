@@ -167,7 +167,7 @@ const Print = ({ authUser = "Waiter Tidak Diketahui", customerName, menu, total 
 
   // Komponen tombol untuk memulai pencetakan
   return (
-    <Button type="button" variant="outline" onClick={() => handlePrint()} disabled={isPrinting}>
+    <Button className="hidden sm:inline-block" type="button" variant="outline" onClick={() => handlePrint()} disabled={isPrinting}>
       {isPrinting ? "Sedang Mencetak..." : "Cetak Resi"}
     </Button>
   );
