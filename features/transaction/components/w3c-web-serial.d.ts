@@ -119,6 +119,7 @@ declare class Serial extends EventTarget {
 /*~ https://wicg.github.io/serial/#extensions-to-the-navigator-interface */
 interface Navigator {
   readonly serial: Serial;
+  readonly bluetooth: Serial;
 }
 
 /*~ https://wicg.github.io/serial/#extensions-to-workernavigator-interface */

@@ -36,6 +36,7 @@
     "react-day-picker": "8.10.1",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
+    "react-native-thermal-receipt-printer": "^1.2.0-rc.2",
     "react-thermal-printer": "^0.19.0",
     "react-use": "^17.5.1",
     "recharts": "^2.13.0",
