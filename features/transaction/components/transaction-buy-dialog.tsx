@@ -129,7 +129,7 @@ const PrintContent: React.FC<PrintProps> = ({ authUser = "Waiter", customerName,
         </div>
 
         <div style={{ marginTop: "10px", textAlign: "center" }}>
-          <h3 style={{ fontSize: "12px", margin: "5px 0" }}>HUBUNGI KAMI:</h3>
+          <h3 style={{ fontSize: "12px", margin: "5px 0" }}>UNTUK PEMESANAN HUBUNGI</h3>
           <p style={{ margin: "3px 0" }}>0813-1805-3671 (WhatsApp)</p>
           <p style={{ margin: "3px 0" }}>@fatkid.catering (Instagram)</p>
         </div>
