@@ -20,6 +20,7 @@ import Print from "./print";
 import { format, set } from "date-fns";
 
 import { useReactToPrint } from "react-to-print";
+import { Line } from "react-thermal-printer";
 
 const formSchema = z.object({
   customer: z.string().min(2).max(50),
@@ -42,26 +43,45 @@ interface PrintProps {
 const RowPrint = ({left, right}: {left: any, right: any}) => {
   return (
     <div className="flex justify-between">
-      <p>{left}</p>
-      <p>{right}</p>
+      <p className="text-2xl font-light">{left}</p>
+      <p className="text-2xl">{right}</p>
+    </div>
+  );
+}
+
+const LinePrint = () => {
+  return (
+    <div className="border-b-2 overflow-hidden -ml-7">
+      ===================================================================================================
+    </div>
+  );
+}
+
+const LinePrintSingle = () => {
+  return (
+    <div className="border-b-2 overflow-hidden -ml-7">
+      -----------------------------------------------------------------------------------------------------------------------------------------------
     </div>
   );
 }
 
 const PrintContent = ({ authUser, customerName, menu, total }:PrintProps) => {
   return (
-    <div>
-      <div className="mx-2 my-3 border-b-4">
+    <div className="px-4">
+      <div className="mx-2 my-3 border-b-2 border-dashed border-gray-500 flex justify-center items-center">
         <img src="/Fatkid.png" width={100} height={100} />
-        <h1 className="text-2xl font-bold">FATKID CATERING</h1>
+        <p className="text-4xl font-bold">FATKID CATERING</p>
       </div> 
+        <LinePrint />
       <div className="border-b-4 mx-2 my-2">
-        <RowPrint left="PEGAWAI" right={authUser} />
-        <RowPrint left="PELANGGAN" right={customerName} />
+        <RowPrint left="Pegawai" right={authUser} />
+        <RowPrint left="Pelanggan" right={customerName} />
         <RowPrint left="Tanggal" right={format(new Date(), "yyy-MM-dd")} />
       </div>
+      <LinePrint />
       <div className="mx-2 my-1 border-b-4">
-        <h2 >PESANAN : </h2>
+        <h2 className="text-2xl" >PESANAN : </h2>
+        <LinePrintSingle />
       </div>
       <div>
         {menu.map((item, index: number) => (
@@ -71,22 +91,28 @@ const PrintContent = ({ authUser, customerName, menu, total }:PrintProps) => {
               left={`${item.name.substring(0, 20)} (${item.quantity}x Rp${item.price.toLocaleString()})`}
               right={`Rp${(item.price * item.quantity).toLocaleString()}`}
             />
+            <LinePrintSingle />
           </div>
         ))}
         {/* <RowPrint left="Nama Menu" right="Harga" /> */}
       </div>
       <div>
         <RowPrint left="TOTAL BAYAR" right={`Rp${total.toLocaleString()}`} />
+        <LinePrint />
       </div>
       <div className="mx-2 my-1 border-b-4">
-        <h2>UNTUK PEMESANAN HUBUNGI : </h2>
+        <p className="text-center text-2xl">UNTUK PEMESANAN HUBUNGI : </p>
       </div>
       <div>
-        <RowPrint left="0813-1805-3671 (FATKID)" right="" />
-        <RowPrint left="@fatkid.catering (Instagram)" right="" />
+        <p className="text-center text-2xl">0813-1805-3671 (FATKID)</p>
+        <p className="text-center text-2xl">@fatkid.catering (Instagram)</p>
+        <p className="text-center text-2xl">UNTUK PEMESANAN HUBUNGI :</p>
+        {/* <RowPrint left="0813-1805-3671 (FATKID)" right="" /> */}
+        {/* <RowPrint left="@fatkid.catering (Instagram)" right="" /> */}
       </div>
       <div className="mx-2 my-1 border-b-4">
-        <h2>TERIMA KASIH TELAH BERBELANJA DI FATKID CATERING!</h2>
+        <LinePrint />
+        <p className="text-center text-2xl">TERIMA KASIH TELAH BERBELANJA DI FATKID CATERING!</p>
       </div>
     </div>
   );
@@ -261,14 +287,17 @@ const TransactionBuyDialog = () => {
                     </TableBody>
                   </Table>
                   {/* Display total price */}
-                  <p className="text-right mr-4 text-2xl font-bold text-slate-900">
+                  <div className="flex justify-end py-4">
+                  <p className="text-end mr-4 text-2xl font-bold text-slate-900">
                     Total: Rp
                     {total.toLocaleString("id-ID", {
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
                     })}
                   </p>
+                  </div>
 
+                  <div className="flex gap-2">
                   <Button type="submit" className="mx-auto mr-2  inline-block" disabled={createMutation.isPending}>
                     Submit
                   </Button>
@@ -277,13 +306,14 @@ const TransactionBuyDialog = () => {
                     {isPrinting ? "Select Printer" : "Print"}
                   </Button> */}
                   {/* {submited && ( */}
+                  
                   <Print
                     authUser={auth.user?.fullName || "unknown"} 
                     customerName={customerName} 
                     menu={menuFix} 
                     total={total} 
                   />
-                  <Button className="sm:hidden" variant="outline" type="button" onClick={() => handleReactToPrint()}>
+                  <Button className="" variant="outline" type="button" onClick={() => handleReactToPrint()}>
                     Print
                   </Button>
                   <div style={{display: "none"}}>
@@ -295,6 +325,7 @@ const TransactionBuyDialog = () => {
                         total={total}
                       />
                     </div>
+                  </div>
                   </div>
                   {/* )} */}
                 </form>
