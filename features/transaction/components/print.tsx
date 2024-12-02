@@ -16,43 +16,6 @@ const Print = ({ authUser = "Waiter Tidak Diketahui", customerName, menu, total 
 
   const [isPrinting, setIsPrinting] = useState(false);
   const [port, setPort] = useState<SerialPort>();
-  const receipt = (
-    <Printer type="epson" width={42} characterSet="korea" debug={true}>
-      <Text size={{ width: 2, height: 2 }}>9,500원</Text>
-      <Text bold={true}>결제 완료</Text>
-      <Br />
-      <Line />
-      <Row left="결제방법" right="체크카드" />
-      <Row left="카드번호" right="123456**********" />
-      <Row left="할부기간" right="일시불" />
-      <Row left="결제금액" right="9,500" />
-      <Row left="부가세액" right="863" />
-      <Row left="공급가액" right="8,637" />
-      <Line />
-      <Row left={<Text bold={true}>맛있는 옥수수수염차 X 2</Text>} right="11,000" />
-      <Text> 옵션1(500)/옵션2/"메모"</Text>
-      <Row left=" (-) 할인" right="- 500" />
-      <Br />
-      <Line />
-      <Row left={<Text bold={true}>합계</Text>} right={<Text underline="1dot-thick">9,500</Text>} />
-      <Row left="(-) 할인 2%" right="- 1,000" />
-      <Line />
-      <Row left="대표" right="김대표" />
-      <Row left="사업자등록번호" right="000-00-00000" />
-      <Row left="대표번호" right="0000-0000" />
-      <Row left="주소" right="어디시 어디구 어디동 몇동몇호" />
-      <Row
-        gap={1}
-        left={<Text size={{ width: 2, height: 2 }}>포</Text>}
-        center={<Text size={{ width: 2, height: 2 }}>알로하 포케 맛있는 거</Text>}
-        right="X 15"
-      />
-      <Line />
-      <Br />
-      <Text align="center">Wifi: some-wifi / PW: 123123</Text>
-      <Cut />
-    </Printer>
-  );
 
   // Format teks untuk resi
   // const formatReceiptText = () => {
@@ -108,50 +71,51 @@ const Print = ({ authUser = "Waiter Tidak Diketahui", customerName, menu, total 
 
   // Fungsi untuk mencetak
   const handlePrint = async () => {
-    // try {
+    try {
       setIsPrinting(true);
       console.log("Memulai proses pencetakan...");
-
-      // const Receipt = (
-      //   <Printer type="epson" width={42} characterSet="iso8859_15_latin9" debug={true}>
-      //     <Text size={{ width: 4, height: 4 }}>FATKID CATERING</Text>
-      //     <Br />
-      //     <Line />
-      //     <Row left="PEGAWAI" right={authUser} />
-      //     <Row left="PELANGGAN" right={customerName || "Pelanggan Tidak Diketahui"} />
-      //     <Row left="TANGGAL" right={format(new Date(), "yyy-MM-dd")} />
-      //     <Line />
-      //     <Text>PESANAN:</Text>
-      //     {menu.map((item: any, index: any) => (
-      //       <Row
-      //         key={index}
-      //         left={`${item.name.substring(0, 20)} (${item.quantity}x Rp${item.price.toLocaleString()})`}
-      //         right={`Rp${(item.price * item.quantity).toLocaleString()}`}
-      //       />
-      //     ))}
-      //     <Line />
-      //     <Row left={<Text bold={true}>TOTAL BAYAR</Text>} right={`Rp ${total.toLocaleString()}`} />
-      //     <Line />
-      //     <Text align="center">UNTUK PEMESANAN HUBUNGI:</Text>
-      //     <Text align="center">0813-1805-3671 (FATKID)</Text>
-      //     <Text align="center">@fatkid.catering (Instagram)</Text>
-      //     <Br />
-      //     <Text align="center">TERIMA KASIH TELAH BERBELANJA DI FATKID CATERING!</Text>
-      //     <Cut />
-      //   </Printer>
-      // );
-
-      // async () => {
-        let _port = port;
+      let _port = port;
         if (_port == null) {
           _port = await navigator.serial.requestPort();
           await _port.open({ baudRate: 9600 });
           setPort(_port);
         }
+
+      const Receipt = (
+        <Printer type="epson" width={42} characterSet="iso8859_15_latin9" debug={true}>
+          <Text size={{ width: 4, height: 4 }}>FATKID CATERING</Text>
+          <Br />
+          <Line />
+          <Row left="PEGAWAI" right={authUser} />
+          <Row left="PELANGGAN" right={customerName || "Pelanggan Tidak Diketahui"} />
+          <Row left="TANGGAL" right={format(new Date(), "yyy-MM-dd")} />
+          <Line />
+          <Text>PESANAN:</Text>
+          {menu.map((item: any, index: number) => (
+            <Row
+              key={index}
+              left={`${item.name.substring(0, 20)} (${item.quantity}x Rp${item.price.toLocaleString()})`}
+              right={`Rp${(item.price * item.quantity).toLocaleString()}`}
+            />
+          ))}
+          <Line />
+          <Row left={<Text bold={true}>TOTAL BAYAR</Text>} right={`Rp ${total.toLocaleString()}`} />
+          <Line />
+          <Text align="center">UNTUK PEMESANAN HUBUNGI:</Text>
+          <Text align="center">0813-1805-3671 (FATKID)</Text>
+          <Text align="center">@fatkid.catering (Instagram)</Text>
+          <Br />
+          <Text align="center">TERIMA KASIH TELAH BERBELANJA DI FATKID CATERING!</Text>
+          <Cut />
+        </Printer>
+      );
+
+      // async () => {
+        
   
         const writer = _port.writable?.getWriter();
         if (writer != null) {
-          const data = await render(receipt);
+          const data = await render(Receipt);
   
           await writer.write(data);
           writer.releaseLock();
@@ -193,12 +157,12 @@ const Print = ({ authUser = "Waiter Tidak Diketahui", customerName, menu, total 
       // writer.releaseLock();
       // await port.close();
       console.log("Pencetakan selesai.");
-    // } catch (error) {
-      // console.error("Terjadi kesalahan saat mencetak:", error);
-      // alert("Gagal mencetak. Pastikan printer terhubung dengan benar.");
-    // } finally {
+    } catch (error) {
+      console.error("Terjadi kesalahan saat mencetak:", error);
+      alert("Gagal mencetak. Pastikan printer terhubung dengan benar.");
+    } finally {
       setIsPrinting(false);
-    // }
+    }
   };
 
   // Komponen tombol untuk memulai pencetakan
