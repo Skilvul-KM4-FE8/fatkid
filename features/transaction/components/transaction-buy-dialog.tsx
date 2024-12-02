@@ -212,7 +212,12 @@ const TransactionBuyDialog = () => {
                     {isPrinting ? "Select Printer" : "Print"}
                   </Button> */}
                   {/* {submited && ( */}
-                  <Print authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} />
+                  <Print 
+                    authUser={auth.user?.fullName || "unknown"} 
+                    customerName={customerName} 
+                    menu={menuFix} 
+                    total={total} 
+                  />
                   {/* )} */}
                 </form>
               </Form>
