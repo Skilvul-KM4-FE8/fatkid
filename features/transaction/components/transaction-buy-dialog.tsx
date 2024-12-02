@@ -189,7 +189,7 @@ const TransactionBuyDialog = () => {
 
   return (
     <>
-      <div style={{ display: "none" }}>
+      <div style={{ display: "none", zIndex: 9999 }}>
         <div ref={contentRef}>
           <PrintContent authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} />
         </div>
