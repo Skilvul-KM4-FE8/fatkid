@@ -40,39 +40,31 @@ interface PrintProps {
   total: number; // Total pembayaran
 }
 
-const RowPrint = ({left, right}: {left: any, right: any}) => {
+const RowPrint = ({ left, right }: { left: any; right: any }) => {
   return (
     <div className="flex justify-between">
       <p className="text-2xl font-light">{left}</p>
       <p className="text-2xl">{right}</p>
     </div>
   );
-}
+};
 
 const LinePrint = () => {
-  return (
-    <div className="border-b-2 overflow-hidden -ml-7">
-      ===================================================================================================
-    </div>
-  );
-}
+  return <div className="border-b-2 overflow-hidden -ml-7">===================================================================================================</div>;
+};
 
 const LinePrintSingle = () => {
-  return (
-    <div className="border-b-2 overflow-hidden -ml-7">
-      -----------------------------------------------------------------------------------------------------------------------------------------------
-    </div>
-  );
-}
+  return <div className="border-b-2 overflow-hidden -ml-7">-----------------------------------------------------------------------------------------------------------------------------------------------</div>;
+};
 
-const PrintContent = ({ authUser, customerName, menu, total }:PrintProps) => {
+const PrintContent = ({ authUser, customerName, menu, total }: PrintProps) => {
   return (
     <div className="px-4">
       <div className="mx-2 my-3 border-b-2 border-dashed border-gray-500 flex justify-center items-center">
         <img src="/Fatkid.png" width={100} height={100} />
         <p className="text-4xl font-bold">FATKID CATERING</p>
-      </div> 
-        <LinePrint />
+      </div>
+      <LinePrint />
       <div className="border-b-4 mx-2 my-2">
         <RowPrint left="Pegawai" right={authUser} />
         <RowPrint left="Pelanggan" right={customerName} />
@@ -80,17 +72,13 @@ const PrintContent = ({ authUser, customerName, menu, total }:PrintProps) => {
       </div>
       <LinePrint />
       <div className="mx-2 my-1 border-b-4">
-        <h2 className="text-2xl" >PESANAN : </h2>
+        <h2 className="text-2xl">PESANAN : </h2>
         <LinePrintSingle />
       </div>
       <div>
         {menu.map((item, index: number) => (
           <div className="border-b-2">
-            <RowPrint 
-              key={index}
-              left={`${item.name.substring(0, 20)} (${item.quantity}x Rp${item.price.toLocaleString()})`}
-              right={`Rp${(item.price * item.quantity).toLocaleString()}`}
-            />
+            <RowPrint key={index} left={`${item.name.substring(0, 20)} (${item.quantity}x Rp${item.price.toLocaleString()})`} right={`Rp${(item.price * item.quantity).toLocaleString()}`} />
             <LinePrintSingle />
           </div>
         ))}
@@ -128,10 +116,10 @@ const TransactionBuyDialog = () => {
 
   // State for quantity per item, initialized to 1 for all menu items
   const [quantities, setQuantities] = useState<number[]>([]);
-  
+
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const handleReactToPrint = useReactToPrint({contentRef})
+  const handleReactToPrint = useReactToPrint({ contentRef });
 
   // When menu changes, set default quantity to 1 for each item
   useEffect(() => {
@@ -176,7 +164,7 @@ const TransactionBuyDialog = () => {
     const orderData: OrderDataType = {
       receptionist: auth.user?.fullName || "Unknown Waiter",
       customer: values.customer,
-      items: menu.map((item, index) => ({ 
+      items: menu.map((item, index) => ({
         ...item,
         name: item.name,
         quantity: quantities[index],
@@ -201,6 +189,11 @@ const TransactionBuyDialog = () => {
 
   return (
     <>
+      <div style={{ display: "none" }}>
+        <div ref={contentRef}>
+          <PrintContent authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} />
+        </div>
+      </div>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent>
           <DialogHeader>
@@ -219,9 +212,9 @@ const TransactionBuyDialog = () => {
                       <FormItem>
                         <FormLabel className="font-semibold text-slate-900">Customer Name</FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Customer Name" 
-                            {...field} 
+                          <Input
+                            placeholder="Customer Name"
+                            {...field}
                             onChange={(e) => {
                               field.onChange(e); // Perbarui React Hook Form
                               setCustomerName(e.target.value); // Perbarui state customerName
@@ -288,44 +281,29 @@ const TransactionBuyDialog = () => {
                   </Table>
                   {/* Display total price */}
                   <div className="flex justify-end py-4">
-                  <p className="text-end mr-4 text-2xl font-bold text-slate-900">
-                    Total: Rp
-                    {total.toLocaleString("id-ID", {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    })}
-                  </p>
+                    <p className="text-end mr-4 text-2xl font-bold text-slate-900">
+                      Total: Rp
+                      {total.toLocaleString("id-ID", {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      })}
+                    </p>
                   </div>
 
                   <div className="flex gap-2">
-                  <Button type="submit" className="mx-auto mr-2  inline-block" disabled={createMutation.isPending}>
-                    Submit
-                  </Button>
+                    <Button type="submit" className="mx-auto mr-2  inline-block" disabled={createMutation.isPending}>
+                      Submit
+                    </Button>
 
-                  {/* <Button variant="outline" type="button" disabled={isPrinting} onClick={() => print()}>
+                    {/* <Button variant="outline" type="button" disabled={isPrinting} onClick={() => print()}>
                     {isPrinting ? "Select Printer" : "Print"}
                   </Button> */}
-                  {/* {submited && ( */}
-                  
-                  <Print
-                    authUser={auth.user?.fullName || "unknown"} 
-                    customerName={customerName} 
-                    menu={menuFix} 
-                    total={total} 
-                  />
-                  <Button className="" variant="outline" type="button" onClick={() => handleReactToPrint()}>
-                    Print
-                  </Button>
-                  <div style={{display: "none"}}>
-                    <div ref={contentRef}>
-                      <PrintContent 
-                        authUser={auth.user?.fullName || "unknown"}
-                        customerName={customerName}
-                        menu={menuFix}
-                        total={total}
-                      />
-                    </div>
-                  </div>
+                    {/* {submited && ( */}
+
+                    <Print authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} />
+                    <Button className="" variant="outline" type="button" onClick={() => handleReactToPrint()}>
+                      Print
+                    </Button>
                   </div>
                   {/* )} */}
                 </form>
