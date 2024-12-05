@@ -21,7 +21,10 @@ import { format, set } from "date-fns";
 
 import { useReactToPrint } from "react-to-print";
 
-// import PrintMobile from "./print-mobile";
+import { Line } from "react-thermal-printer";
+import { PrintContent } from "@/components/print-content";
+
+import ReactDOM from "react-dom";
 
 const formSchema = z.object({
   customer: z.string().min(2).max(50),
@@ -34,121 +37,80 @@ type OrderDataType = {
   totalPrice: number;
 };
 
-interface PrintProps {
-  authUser?: string; // Nama pengguna yang mencetak
-  customerName: string; // Nama pelanggan
-  menu: { name: string; price: number; quantity: number; id: string }[]; // Daftar menu
-  total: number; // Total pembayaran
-}
 
-const RowPrint = ({ left, right }: { left: any; right: any }) => {
-  return (
-    <div className="flex justify-between">
-      <p className="text-2xl font-light">{left}</p>
-      <p className="text-2xl">{right}</p>
-    </div>
-  );
-};
-const PrintContent: React.FC<PrintProps> = ({ authUser = "Waiter", customerName, menu, total }) => {
-  const separator2 = "=".repeat(40);
-  const separator1 = "-".repeat(38);
-  const now = new Date();
+// interface PrintProps {
+//   authUser?: string; // Nama pengguna yang mencetak
+//   customerName: string; // Nama pelanggan
+//   menu: { name: string; price: number; quantity: number; id: string }[]; // Daftar menu
+//   total: number; // Total pembayaran
+// }
 
-  const RowPrint = ({ left, right }: { left: string; right: string }) => (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        width: "100%",
-      }}
-    >
-      <span>{left}</span>
-      <span>{right}</span>
-    </div>
-  );
+// const RowPrint = ({ left, right }: { left: any; right: any }) => {
+//   return (
+//     <div className="flex justify-between">
+//       <p className="text-2xl font-light">{left}</p>
+//       <p className="text-2xl">{right}</p>
+//     </div>
+//   );
+// };
 
-  return (
-    <div
-      style={{
-        fontFamily: "monospace",
-        fontSize: "10px",
-        width: "58mm",
-        padding: "5px",
-        textAlign: "center",
-      }}
-    >
-      <div className="mx-2 my-3 border-b-2 border-dashed border-gray-500 flex justify-center items-center">
-        <img src="/nextvulWhite.svg" width={100} height={100} />
-      </div>
+// const LinePrint = () => {
+//   return <div className="border-b-2 overflow-hidden -ml-7">===================================================================================================</div>;
+// };
 
-      <div
-        style={{
-          marginBottom: "10px",
-          textAlign: "center",
-        }}
-      >
-        <h1
-          style={{
-            fontSize: "14px",
-            fontWeight: "bold",
-            margin: "5px 0",
-          }}
-        >
-          FATKID CATERING
-        </h1>
-      </div>
+// const LinePrintSingle = () => {
+//   return <div className="border-b-2 overflow-hidden -ml-7">-----------------------------------------------------------------------------------------------------------------------------------------------</div>;
+// };
 
-      <div style={{ textAlign: "left", marginBottom: "5px" }}>
-        {separator2}
-        <div>
-          <RowPrint left="Pegawai" right={authUser} />
-          <RowPrint left="Pelanggan" right={customerName} />
-          <RowPrint left="Tanggal" right={format(now, "dd/MM/yyyy HH:mm")} />
-        </div>
-        {separator1}
+// const PrintContent = ({ authUser, customerName, menu, total }: PrintProps) => {
+//   return (
+//     <div className="px-4">
+//       <div className="mx-2 my-3 border-b-2 border-dashed border-gray-500 flex justify-center items-center">
+//         <img src="/Fatkid.png" width={100} height={100} />
+//         <p className="text-4xl font-bold">FATKID CATERING</p>
+//       </div>
+//       <LinePrint />
+//       <div className="border-b-4 mx-2 my-2">
+//         <RowPrint left="Pegawai" right={authUser} />
+//         <RowPrint left="Pelanggan" right={customerName} />
+//         <RowPrint left="Tanggal" right={format(new Date(), "yyy-MM-dd")} />
+//       </div>
+//       <LinePrint />
+//       <div className="mx-2 my-1 border-b-4">
+//         <h2 className="text-2xl">PESANAN : </h2>
+//         <LinePrintSingle />
+//       </div>
+//       <div>
+//         {menu.map((item, index: number) => (
+//           <div className="border-b-2">
+//             <RowPrint key={index} left={`${item.name.substring(0, 20)} (${item.quantity}x Rp${item.price.toLocaleString()})`} right={`Rp${(item.price * item.quantity).toLocaleString()}`} />
+//             <LinePrintSingle />
+//           </div>
+//         ))}
+//         {/* <RowPrint left="Nama Menu" right="Harga" /> */}
+//       </div>
+//       <div>
+//         <RowPrint left="TOTAL BAYAR" right={`Rp${total.toLocaleString()}`} />
+//         <LinePrint />
+//       </div>
+//       <div className="mx-2 my-1 border-b-4">
+//         <p className="text-center text-2xl">UNTUK PEMESANAN HUBUNGI : </p>
+//       </div>
+//       <div>
+//         <p className="text-center text-2xl">0813-1805-3671 (FATKID)</p>
+//         <p className="text-center text-2xl">@fatkid.catering (Instagram)</p>
+//         <p className="text-center text-2xl">UNTUK PEMESANAN HUBUNGI :</p>
+//         {/* <RowPrint left="0813-1805-3671 (FATKID)" right="" /> */}
+//         {/* <RowPrint left="@fatkid.catering (Instagram)" right="" /> */}
+//       </div>
+//       <div className="mx-2 my-1 border-b-4">
+//         <LinePrint />
+//         <p className="text-center text-2xl">TERIMA KASIH TELAH BERBELANJA DI FATKID CATERING!</p>
+//       </div>
+//     </div>
+//   );
+// };
 
-        <h2
-          style={{
-            fontSize: "12px",
-            margin: "5px 0",
-          }}
-        >
-          PESANAN:
-        </h2>
-
-        {menu.map((item, index) => (
-          <div key={index} style={{ marginBottom: "3px" }}>
-            <RowPrint left={`${item.name.substring(0, 20)} (${item.quantity}x)`} right={`Rp${(item.price * item.quantity).toLocaleString()}`} />
-          </div>
-        ))}
-
-        <div style={{ marginTop: "5px" }}>
-          {separator2}
-          <RowPrint left="TOTAL BAYAR" right={`Rp${total.toLocaleString()}`} />
-          {separator2}
-        </div>
-
-        <div style={{ marginTop: "10px", textAlign: "center" }}>
-          <h3 style={{ fontSize: "12px", margin: "5px 0" }}>UNTUK PEMESANAN HUBUNGI</h3>
-          <p style={{ margin: "3px 0" }}>0813-1805-3671 (WhatsApp)</p>
-          <p style={{ margin: "3px 0" }}>@fatkid.catering (Instagram)</p>
-        </div>
-
-        {separator2}
-
-        <p
-          style={{
-            textAlign: "center",
-            marginTop: "5px",
-            fontWeight: "bold",
-          }}
-        >
-          TERIMA KASIH!
-        </p>
-      </div>
-    </div>
-  );
-};
 
 const TransactionBuyDialog = () => {
   const { isOpen, onOpen, onClose, menu } = useBuyDialog();
@@ -231,13 +193,39 @@ const TransactionBuyDialog = () => {
 
   // Printer Config
 
+  const handlePrint = () => {
+    const printWindow = window.open("", "_blank");
+    if (printWindow) {
+      const printRoot = document.createElement("div");
+      printWindow.document.body.appendChild(printRoot);
+  
+      ReactDOM.render(
+        <PrintContent
+          authUser={auth.user?.fullName || "Unknown"}
+          customerName={customerName}
+          menu={menuFix}
+          total={total}
+        />,
+        printRoot
+      );
+  
+      printWindow.document.close(); // Selesai menulis konten
+  
+      // Tunggu sebentar untuk memastikan semua konten ter-load
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 500);
+    }
+  };
+
   return (
     <>
-      <div style={{ display: "none", zIndex: 9999 }}>
+      {/* <div style={{ display: "none", zIndex: 9999 }}>
         <div ref={contentRef}>
           <PrintContent authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} />
         </div>
-      </div>
+      </div> */}
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent>
           <DialogHeader>
@@ -345,8 +333,13 @@ const TransactionBuyDialog = () => {
                     {/* {submited && ( */}
 
                     <Print authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} />
-                    <Button className="" variant="outline" type="button" onClick={() => handleReactToPrint()}>
-                      Print Mobile
+
+                    {/* <Button className="" variant="outline" type="button" onClick={() => handleReactToPrint()}>
+                      Print
+                    </Button> */}
+                    <Button className="" variant="outline" type="button" onClick={() => handlePrint()}>
+                      Print
+
                     </Button>
                     {/* <PrintMobile authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} /> */}
                   </div>
