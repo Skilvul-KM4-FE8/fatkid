@@ -15,7 +15,7 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
       style={{
         width: "100%",
         fontFamily: "Arial, sans-serif",
-        fontSize: "56px",
+        fontSize: "40px",
         lineHeight: "1.6",
         padding: "0px",
         boxSizing: "border-box",
@@ -25,7 +25,7 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
       <div style={{ textAlign: "center", paddingBottom: "10px" }}>
         <div
           style={{
-            fontSize: "72px",
+            fontSize: "40px",
             fontWeight: "bold",
             marginBottom: "5px",
             display: "flex",
@@ -39,12 +39,8 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
 
       {/* Informasi Kontak */}
       <div style={{ textAlign: "center", borderBottom: "1px dashed #000", paddingBottom: "10px" }}>
-        <p style={{ margin: "0", fontSize: "56px" }}>
-          Telp: 0813-1805-3671
-        </p>
-        <p style={{ margin: "0", fontSize: "56px" }}>
-          Instagram: @fatkid.catering
-        </p>
+        <p style={{ margin: "0", fontSize: "40px" }}>Telp: 0813-1805-3671</p>
+        <p style={{ margin: "0", fontSize: "40px" }}>Instagram: @fatkid.catering</p>
       </div>
 
       {/* Info */}
@@ -75,7 +71,10 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
             <div style={{ flex: "1", marginRight: "10px" }}>
               {item.name} <br /> ({item.quantity} x Rp{item.price.toLocaleString()})
             </div>
-            <div style={{ flexShrink: "0" }}> <br /> Rp{(item.quantity * item.price).toLocaleString()}</div>
+            <div style={{ flexShrink: "0" }}>
+              {" "}
+              <br /> Rp{(item.quantity * item.price).toLocaleString()}
+            </div>
           </div>
         ))}
       </div>
@@ -87,8 +86,8 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
 
       {/* Footer */}
       <div style={{ textAlign: "center", borderTop: "1px dashed #000", paddingTop: "10px" }}>
-        <p style={{ fontSize: "40px", margin: "0" }}>Terima kasih atas pembelian Anda!</p>
-        <p style={{ fontSize: "40px", margin: "0" }}>Semoga hari Anda menyenangkan!</p>
+        <p style={{ fontSize: "20px", margin: "0" }}>Terima kasih atas pembelian Anda!</p>
+        <p style={{ fontSize: "20px", margin: "0" }}>Semoga hari Anda menyenangkan!</p>
       </div>
     </div>
   );
