@@ -214,7 +214,7 @@ const TransactionBuyDialog = () => {
       // Tunggu sebentar untuk memastikan semua konten ter-load
       setTimeout(() => {
         printWindow.print();
-        printWindow.close();
+        // printWindow.close();
       }, 500);
     }
   };
