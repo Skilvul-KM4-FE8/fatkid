@@ -73,9 +73,9 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
             }}
           >
             <div style={{ flex: "1", marginRight: "10px" }}>
-              {item.name} ({item.quantity} x Rp{item.price.toLocaleString()})
+              {item.name} <br /> ({item.quantity} x Rp{item.price.toLocaleString()})
             </div>
-            <div style={{ flexShrink: "0" }}>Rp{(item.quantity * item.price).toLocaleString()}</div>
+            <div style={{ flexShrink: "0" }}> <br /> Rp{(item.quantity * item.price).toLocaleString()}</div>
           </div>
         ))}
       </div>

@@ -209,12 +209,12 @@ const TransactionBuyDialog = () => {
         printRoot
       );
   
-      printWindow.document.close(); // Selesai menulis konten
+      // printWindow.document.close(); // Selesai menulis konten
   
       // Tunggu sebentar untuk memastikan semua konten ter-load
       setTimeout(() => {
         printWindow.print();
-        // printWindow.close();
+        printWindow.close();
       }, 500);
     }
   };
