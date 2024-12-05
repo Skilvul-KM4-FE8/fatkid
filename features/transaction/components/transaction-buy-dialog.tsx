@@ -20,6 +20,7 @@ import Print from "./print";
 import { format, set } from "date-fns";
 
 import { useReactToPrint } from "react-to-print";
+
 import { Line } from "react-thermal-printer";
 import { PrintContent } from "@/components/print-content";
 
@@ -35,6 +36,7 @@ type OrderDataType = {
   items: { id: string; name: string; price: number; quantity: number; originalPrice?: number }[];
   totalPrice: number;
 };
+
 
 // interface PrintProps {
 //   authUser?: string; // Nama pengguna yang mencetak
@@ -108,6 +110,7 @@ type OrderDataType = {
 //     </div>
 //   );
 // };
+
 
 const TransactionBuyDialog = () => {
   const { isOpen, onOpen, onClose, menu } = useBuyDialog();
@@ -330,14 +333,16 @@ const TransactionBuyDialog = () => {
                     {/* {submited && ( */}
 
                     <Print authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} />
+
                     {/* <Button className="" variant="outline" type="button" onClick={() => handleReactToPrint()}>
                       Print
                     </Button> */}
                     <Button className="" variant="outline" type="button" onClick={() => handlePrint()}>
                       Print
+
                     </Button>
+                    {/* <PrintMobile authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} /> */}
                   </div>
-                  {/* )} */}
                 </form>
               </Form>
             </DialogDescription>
