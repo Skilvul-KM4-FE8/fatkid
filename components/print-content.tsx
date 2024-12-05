@@ -15,7 +15,7 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
       style={{
         width: "100%",
         fontFamily: "Arial, sans-serif",
-        fontSize: "20px",
+        fontSize: "30px",
         lineHeight: "1.6",
         padding: "0px",
         boxSizing: "border-box",
@@ -25,7 +25,7 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
       <div style={{ textAlign: "center", paddingBottom: "10px" }}>
         <div
           style={{
-            fontSize: "20px",
+            fontSize: "30px",
             fontWeight: "bold",
             marginBottom: "5px",
             display: "flex",
@@ -39,8 +39,8 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
 
       {/* Informasi Kontak */}
       <div style={{ textAlign: "center", borderBottom: "1px dashed #000", paddingBottom: "10px" }}>
-        <p style={{ margin: "0", fontSize: "20px" }}>Telp: 0813-1805-3671</p>
-        <p style={{ margin: "0", fontSize: "20px" }}>Instagram: @fatkid.catering</p>
+        <p style={{ margin: "0", fontSize: "30px" }}>Telp: 0813-1805-3671</p>
+        <p style={{ margin: "0", fontSize: "30px" }}>Instagram: @fatkid.catering</p>
       </div>
 
       {/* Info */}
