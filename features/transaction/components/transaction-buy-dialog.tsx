@@ -21,6 +21,9 @@ import { format, set } from "date-fns";
 
 import { useReactToPrint } from "react-to-print";
 import { Line } from "react-thermal-printer";
+import { PrintContent } from "@/components/print-content";
+
+import ReactDOM from "react-dom";
 
 const formSchema = z.object({
   customer: z.string().min(2).max(50),
@@ -33,78 +36,78 @@ type OrderDataType = {
   totalPrice: number;
 };
 
-interface PrintProps {
-  authUser?: string; // Nama pengguna yang mencetak
-  customerName: string; // Nama pelanggan
-  menu: { name: string; price: number; quantity: number; id: string }[]; // Daftar menu
-  total: number; // Total pembayaran
-}
+// interface PrintProps {
+//   authUser?: string; // Nama pengguna yang mencetak
+//   customerName: string; // Nama pelanggan
+//   menu: { name: string; price: number; quantity: number; id: string }[]; // Daftar menu
+//   total: number; // Total pembayaran
+// }
 
-const RowPrint = ({ left, right }: { left: any; right: any }) => {
-  return (
-    <div className="flex justify-between">
-      <p className="text-2xl font-light">{left}</p>
-      <p className="text-2xl">{right}</p>
-    </div>
-  );
-};
+// const RowPrint = ({ left, right }: { left: any; right: any }) => {
+//   return (
+//     <div className="flex justify-between">
+//       <p className="text-2xl font-light">{left}</p>
+//       <p className="text-2xl">{right}</p>
+//     </div>
+//   );
+// };
 
-const LinePrint = () => {
-  return <div className="border-b-2 overflow-hidden -ml-7">===================================================================================================</div>;
-};
+// const LinePrint = () => {
+//   return <div className="border-b-2 overflow-hidden -ml-7">===================================================================================================</div>;
+// };
 
-const LinePrintSingle = () => {
-  return <div className="border-b-2 overflow-hidden -ml-7">-----------------------------------------------------------------------------------------------------------------------------------------------</div>;
-};
+// const LinePrintSingle = () => {
+//   return <div className="border-b-2 overflow-hidden -ml-7">-----------------------------------------------------------------------------------------------------------------------------------------------</div>;
+// };
 
-const PrintContent = ({ authUser, customerName, menu, total }: PrintProps) => {
-  return (
-    <div className="px-4">
-      <div className="mx-2 my-3 border-b-2 border-dashed border-gray-500 flex justify-center items-center">
-        <img src="/Fatkid.png" width={100} height={100} />
-        <p className="text-4xl font-bold">FATKID CATERING</p>
-      </div>
-      <LinePrint />
-      <div className="border-b-4 mx-2 my-2">
-        <RowPrint left="Pegawai" right={authUser} />
-        <RowPrint left="Pelanggan" right={customerName} />
-        <RowPrint left="Tanggal" right={format(new Date(), "yyy-MM-dd")} />
-      </div>
-      <LinePrint />
-      <div className="mx-2 my-1 border-b-4">
-        <h2 className="text-2xl">PESANAN : </h2>
-        <LinePrintSingle />
-      </div>
-      <div>
-        {menu.map((item, index: number) => (
-          <div className="border-b-2">
-            <RowPrint key={index} left={`${item.name.substring(0, 20)} (${item.quantity}x Rp${item.price.toLocaleString()})`} right={`Rp${(item.price * item.quantity).toLocaleString()}`} />
-            <LinePrintSingle />
-          </div>
-        ))}
-        {/* <RowPrint left="Nama Menu" right="Harga" /> */}
-      </div>
-      <div>
-        <RowPrint left="TOTAL BAYAR" right={`Rp${total.toLocaleString()}`} />
-        <LinePrint />
-      </div>
-      <div className="mx-2 my-1 border-b-4">
-        <p className="text-center text-2xl">UNTUK PEMESANAN HUBUNGI : </p>
-      </div>
-      <div>
-        <p className="text-center text-2xl">0813-1805-3671 (FATKID)</p>
-        <p className="text-center text-2xl">@fatkid.catering (Instagram)</p>
-        <p className="text-center text-2xl">UNTUK PEMESANAN HUBUNGI :</p>
-        {/* <RowPrint left="0813-1805-3671 (FATKID)" right="" /> */}
-        {/* <RowPrint left="@fatkid.catering (Instagram)" right="" /> */}
-      </div>
-      <div className="mx-2 my-1 border-b-4">
-        <LinePrint />
-        <p className="text-center text-2xl">TERIMA KASIH TELAH BERBELANJA DI FATKID CATERING!</p>
-      </div>
-    </div>
-  );
-};
+// const PrintContent = ({ authUser, customerName, menu, total }: PrintProps) => {
+//   return (
+//     <div className="px-4">
+//       <div className="mx-2 my-3 border-b-2 border-dashed border-gray-500 flex justify-center items-center">
+//         <img src="/Fatkid.png" width={100} height={100} />
+//         <p className="text-4xl font-bold">FATKID CATERING</p>
+//       </div>
+//       <LinePrint />
+//       <div className="border-b-4 mx-2 my-2">
+//         <RowPrint left="Pegawai" right={authUser} />
+//         <RowPrint left="Pelanggan" right={customerName} />
+//         <RowPrint left="Tanggal" right={format(new Date(), "yyy-MM-dd")} />
+//       </div>
+//       <LinePrint />
+//       <div className="mx-2 my-1 border-b-4">
+//         <h2 className="text-2xl">PESANAN : </h2>
+//         <LinePrintSingle />
+//       </div>
+//       <div>
+//         {menu.map((item, index: number) => (
+//           <div className="border-b-2">
+//             <RowPrint key={index} left={`${item.name.substring(0, 20)} (${item.quantity}x Rp${item.price.toLocaleString()})`} right={`Rp${(item.price * item.quantity).toLocaleString()}`} />
+//             <LinePrintSingle />
+//           </div>
+//         ))}
+//         {/* <RowPrint left="Nama Menu" right="Harga" /> */}
+//       </div>
+//       <div>
+//         <RowPrint left="TOTAL BAYAR" right={`Rp${total.toLocaleString()}`} />
+//         <LinePrint />
+//       </div>
+//       <div className="mx-2 my-1 border-b-4">
+//         <p className="text-center text-2xl">UNTUK PEMESANAN HUBUNGI : </p>
+//       </div>
+//       <div>
+//         <p className="text-center text-2xl">0813-1805-3671 (FATKID)</p>
+//         <p className="text-center text-2xl">@fatkid.catering (Instagram)</p>
+//         <p className="text-center text-2xl">UNTUK PEMESANAN HUBUNGI :</p>
+//         {/* <RowPrint left="0813-1805-3671 (FATKID)" right="" /> */}
+//         {/* <RowPrint left="@fatkid.catering (Instagram)" right="" /> */}
+//       </div>
+//       <div className="mx-2 my-1 border-b-4">
+//         <LinePrint />
+//         <p className="text-center text-2xl">TERIMA KASIH TELAH BERBELANJA DI FATKID CATERING!</p>
+//       </div>
+//     </div>
+//   );
+// };
 
 const TransactionBuyDialog = () => {
   const { isOpen, onOpen, onClose, menu } = useBuyDialog();
@@ -187,13 +190,39 @@ const TransactionBuyDialog = () => {
 
   // Printer Config
 
+  const handlePrint = () => {
+    const printWindow = window.open("", "_blank");
+    if (printWindow) {
+      const printRoot = document.createElement("div");
+      printWindow.document.body.appendChild(printRoot);
+  
+      ReactDOM.render(
+        <PrintContent
+          authUser={auth.user?.fullName || "Unknown"}
+          customerName={customerName}
+          menu={menuFix}
+          total={total}
+        />,
+        printRoot
+      );
+  
+      printWindow.document.close(); // Selesai menulis konten
+  
+      // Tunggu sebentar untuk memastikan semua konten ter-load
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 500);
+    }
+  };
+
   return (
     <>
-      <div style={{ display: "none", zIndex: 9999 }}>
+      {/* <div style={{ display: "none", zIndex: 9999 }}>
         <div ref={contentRef}>
           <PrintContent authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} />
         </div>
-      </div>
+      </div> */}
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent>
           <DialogHeader>
@@ -301,7 +330,10 @@ const TransactionBuyDialog = () => {
                     {/* {submited && ( */}
 
                     <Print authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} />
-                    <Button className="" variant="outline" type="button" onClick={() => handleReactToPrint()}>
+                    {/* <Button className="" variant="outline" type="button" onClick={() => handleReactToPrint()}>
+                      Print
+                    </Button> */}
+                    <Button className="" variant="outline" type="button" onClick={() => handlePrint()}>
                       Print
                     </Button>
                   </div>
