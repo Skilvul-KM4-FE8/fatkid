@@ -15,9 +15,9 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
       style={{
         width: "100%",
         fontFamily: "Arial, sans-serif",
-        fontSize: "14px",
+        fontSize: "28px",
         lineHeight: "1.6",
-        padding: "5px",
+        padding: "0px",
         boxSizing: "border-box",
       }}
     >
@@ -25,7 +25,7 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
       <div style={{ textAlign: "center", paddingBottom: "10px" }}>
         <div
           style={{
-            fontSize: "24px",
+            fontSize: "32px",
             fontWeight: "bold",
             marginBottom: "5px",
             display: "flex",
@@ -39,10 +39,10 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
 
       {/* Informasi Kontak */}
       <div style={{ textAlign: "center", borderBottom: "1px dashed #000", paddingBottom: "10px" }}>
-        <p style={{ margin: "0", fontSize: "12px" }}>
+        <p style={{ margin: "0", fontSize: "24px" }}>
           Telp: 0813-1805-3671
         </p>
-        <p style={{ margin: "0", fontSize: "12px" }}>
+        <p style={{ margin: "0", fontSize: "24px" }}>
           Instagram: @fatkid.catering
         </p>
       </div>
@@ -87,8 +87,8 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
 
       {/* Footer */}
       <div style={{ textAlign: "center", borderTop: "1px dashed #000", paddingTop: "10px" }}>
-        <p style={{ fontSize: "12px", margin: "0" }}>Terima kasih atas pembelian Anda!</p>
-        <p style={{ fontSize: "12px", margin: "0" }}>Semoga hari Anda menyenangkan!</p>
+        <p style={{ fontSize: "24px", margin: "0" }}>Terima kasih atas pembelian Anda!</p>
+        <p style={{ fontSize: "24px", margin: "0" }}>Semoga hari Anda menyenangkan!</p>
       </div>
     </div>
   );
