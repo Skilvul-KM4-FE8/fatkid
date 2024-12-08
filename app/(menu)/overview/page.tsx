@@ -26,8 +26,9 @@ export default function MenuPage() {
 
   // Memoize the transaction data to avoid unnecessary recalculations
   const transactionData = useMemo(() => transactions.data?.data || [], [transactions.data]);
+  console.log(transactionData.food);
   const overviewFood = useMemo(() => transactions.data?.food || [], [transactions.data]);
-  console.log(overviewFood.items);
+  console.log(overviewFood);
   const overviewDrink = useMemo(() => transactions.data?.drink || [], [transactions.data]);
 
   const [soldMenu, setSoldMenu] = useState(0);
@@ -77,13 +78,13 @@ export default function MenuPage() {
 
       <div className="grid md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4 mt-4  rounded-md ">
         <div className="flex justify-center">
-          <PieChart />
+          <PieChart data={overviewFood} identity={{ name: "Food Sold" }} />
         </div>
         <div className="flex justify-center">
-          <PieChart />
+          <PieChart data={overviewDrink} identity={{ name: "Drink Sold" }} />
         </div>
         <div className="flex justify-center">
-          <PieChart />
+          <PieChart data={overviewDrink} identity={{ name: "Drink Sold" }} />
         </div>
       </div>
     </div>
