@@ -27,6 +27,7 @@ export default function MenuPage() {
   // Memoize the transaction data to avoid unnecessary recalculations
   const transactionData = useMemo(() => transactions.data?.data || [], [transactions.data]);
   const overviewFood = useMemo(() => transactions.data?.food || [], [transactions.data]);
+  console.log(overviewFood.items);
   const overviewDrink = useMemo(() => transactions.data?.drink || [], [transactions.data]);
 
   const [soldMenu, setSoldMenu] = useState(0);
@@ -46,8 +47,6 @@ export default function MenuPage() {
           totalPrice: item.totalPrice,
         }))
       : [];
-
-  console.log(fixedData);
 
   useEffect(() => {
     if (transactionData.length > 0) {
