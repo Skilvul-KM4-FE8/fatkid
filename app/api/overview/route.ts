@@ -41,7 +41,44 @@ export async function GET(req: Request) {
                 items: {}
             }
         })
-        return NextResponse.json(data, {status: 200})
+
+        const food = await prisma.transaction.findMany({
+            where: {
+                userId: auth.userId,
+                createdAt: {
+                    gte: filterFrom,
+                    lte: filterTo
+                },
+                items: {
+                    some: {
+                        category: "Food"
+                    }
+                }
+            },
+            include: {
+                items: { }
+            }
+        })
+
+        const drink = await prisma.transaction.findMany({
+            where: {
+                userId: auth.userId,
+                createdAt: {
+                    gte: filterFrom,
+                    lte: filterTo
+                },
+                items: {
+                    some: {
+                        category: "Drink"
+                    }
+                }
+            },
+            include: {
+                items: { }
+            }
+        })
+
+        return NextResponse.json({data, food, drink}, {status: 200})
     } catch (error) {
         console.log(error)
         return NextResponse.json({error: "Failed to fetch data"})
