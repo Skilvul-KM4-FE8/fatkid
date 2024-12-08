@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { format } from "date-fns";
+import Image from "next/image";
 
 interface PrintProps {
   authUser: string;
@@ -33,7 +34,7 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
             alignItems: "center",
           }}
         >
-          <img src="/Fatkid.png" height={70} /> FATKID CATERING
+          <Image src="/Fatkid.png" height={70} alt="logo" /> FATKID CATERING
         </div>
       </div>
 
