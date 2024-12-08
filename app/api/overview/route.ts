@@ -75,14 +75,16 @@ export async function GET(req: Request) {
         });
 
         const data = transactions.map((transaction) => {
+            // Menghitung total untuk makanan (food)
             const totalSoldFood = transaction.items
                 .filter((item) => item.category === "Food")
-                .reduce((sum, item) => sum + (item.price ?? 0) * item.quantity, 0);
-
+                .reduce((sum, item) => sum + (item.price ?? 0), 0);
+        
+            // Menghitung total untuk minuman (drink)
             const totalSoldDrink = transaction.items
                 .filter((item) => item.category === "Drink")
-                .reduce((sum, item) => sum + (item.price ?? 0) * item.quantity, 0);
-
+                .reduce((sum, item) => sum + (item.price ?? 0), 0);
+        
             return {
                 ...transaction,
                 totalSoldFood,
