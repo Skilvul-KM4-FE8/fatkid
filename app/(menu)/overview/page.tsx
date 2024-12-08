@@ -6,6 +6,7 @@ import { Chart } from "@/components/chart";
 import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import { useGetOverview } from "@/features/overview/api/use-get-overview";
+import PieChart from "@/components/piechart";
 
 export default function MenuPage() {
   const transactions = useGetOverview();
@@ -44,6 +45,8 @@ export default function MenuPage() {
         }))
       : [];
 
+  console.log(fixedData);
+
   useEffect(() => {
     if (transactionData.length > 0) {
       const totalMenuSold = transactionData.reduce((total: number, transaction: any) => {
@@ -69,6 +72,18 @@ export default function MenuPage() {
       </div>
       <div className="mt-10">
         <Chart data={fixedData} disabled={transactions.isLoading} />
+      </div>
+
+      <div className="grid md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4 mt-4  rounded-md ">
+        <div className="flex justify-center">
+          <PieChart />
+        </div>
+        <div className="flex justify-center">
+          <PieChart />
+        </div>
+        <div className="flex justify-center">
+          <PieChart />
+        </div>
       </div>
     </div>
   );
