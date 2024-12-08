@@ -1,11 +1,11 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-import { Label, Pie, PieChart as RechartsPieChart, Sector } from "recharts";
+import { Pie, PieChart as RechartsPieChart, Sector } from "recharts";
 import { PieSectorDataItem } from "recharts/types/polar/Pie";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 interface DataItem {
   name: string;
