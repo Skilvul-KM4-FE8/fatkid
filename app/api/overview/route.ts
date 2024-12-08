@@ -29,7 +29,7 @@ export async function GET(req: Request) {
     console.log("filterTo:", filterTo)
 
     try {
-        const data = await prisma.transaction.findMany({
+        const transactions = await prisma.transaction.findMany({
             where: {
                 userId: auth.userId,
                 createdAt: {
@@ -42,41 +42,53 @@ export async function GET(req: Request) {
             }
         })
 
-        const food = await prisma.transaction.findMany({
-            where: {
-                userId: auth.userId,
-                createdAt: {
-                    gte: filterFrom,
-                    lte: filterTo
-                },
-                items: {
-                    some: {
-                        category: "Food"
-                    }
-                }
-            },
-            include: {
-                items: { }
-            }
-        })
+        let food: { name: string; quantity: number }[] = [];
+        let drink: { name: string; quantity: number }[] = [];
 
-        const drink = await prisma.transaction.findMany({
-            where: {
-                userId: auth.userId,
-                createdAt: {
-                    gte: filterFrom,
-                    lte: filterTo
-                },
-                items: {
-                    some: {
-                        category: "Drink"
-                    }
+        transactions.forEach((transaction) => {
+            const foodItems = transaction.items.filter(
+                (item) => item.category === "Food"
+            );
+            const drinkItems = transaction.items.filter(
+                (item) => item.category === "Drink"
+            );
+
+            // Aggregate food items
+            foodItems.forEach((item) => {
+                const index = food.findIndex((foodItem) => foodItem.name === item.name);
+                if (index === -1) {
+                    food.push({ name: item.name ?? "Unknown", quantity: item.quantity });
+                } else {
+                    food[index].quantity += item.quantity;
                 }
-            },
-            include: {
-                items: { }
-            }
-        })
+            });
+
+            // Aggregate drink items
+            drinkItems.forEach((item) => {
+                const index = drink.findIndex((drinkItem) => drinkItem.name === item.name);
+                if (index === -1) {
+                    drink.push({ name: item.name ?? "Unknown", quantity: item.quantity });
+                } else {
+                    drink[index].quantity += item.quantity;
+                }
+            });
+        });
+
+        const data = transactions.map((transaction) => {
+            const totalSoldFood = transaction.items
+                .filter((item) => item.category === "Food")
+                .reduce((sum, item) => sum + (item.price ?? 0) * item.quantity, 0);
+
+            const totalSoldDrink = transaction.items
+                .filter((item) => item.category === "Drink")
+                .reduce((sum, item) => sum + (item.price ?? 0) * item.quantity, 0);
+
+            return {
+                ...transaction,
+                totalSoldFood,
+                totalSoldDrink,
+            };
+        });
 
         return NextResponse.json({data, food, drink}, {status: 200})
     } catch (error) {
