@@ -25,7 +25,9 @@ export default function MenuPage() {
   const { from, to } = dateRange;
 
   // Memoize the transaction data to avoid unnecessary recalculations
-  const transactionData = useMemo(() => transactions.data || [], [transactions.data]);
+  const transactionData = useMemo(() => transactions.data?.data || [], [transactions.data]);
+  const overviewFood = useMemo(() => transactions.data?.food || [], [transactions.data]);
+  const overviewDrink = useMemo(() => transactions.data?.drink || [], [transactions.data]);
 
   const [soldMenu, setSoldMenu] = useState(0);
 
