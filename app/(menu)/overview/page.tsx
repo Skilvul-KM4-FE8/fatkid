@@ -6,6 +6,7 @@ import { Chart } from "@/components/chart";
 import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import { useGetOverview } from "@/features/overview/api/use-get-overview";
+import PieChart from "@/components/piechart";
 
 export default function MenuPage() {
   const transactions = useGetOverview();
@@ -24,7 +25,14 @@ export default function MenuPage() {
   const { from, to } = dateRange;
 
   // Memoize the transaction data to avoid unnecessary recalculations
-  const transactionData = useMemo(() => transactions.data || [], [transactions.data]);
+  const transactionData = useMemo(() => transactions.data?.data || [], [transactions.data]);
+
+  const overviewFood = useMemo(() => transactions.data?.food || [], [transactions.data]);
+
+  const overviewDrink = useMemo(() => transactions.data?.drink || [], [transactions.data]);
+
+  const overviewAllItems = useMemo(() => transactions.data?.allitems || [], [transactions.data]);
+  console.log(overviewAllItems);
 
   const [soldMenu, setSoldMenu] = useState(0);
 
@@ -69,6 +77,18 @@ export default function MenuPage() {
       </div>
       <div className="mt-10">
         <Chart data={fixedData} disabled={transactions.isLoading} />
+      </div>
+
+      <div className="grid md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4 mt-4  rounded-md ">
+        <div className="flex justify-center">
+          <PieChart data={overviewFood} identity={{ name: "Food Sold" }} />
+        </div>
+        <div className="flex justify-center">
+          <PieChart data={overviewDrink} identity={{ name: "Drink Sold" }} />
+        </div>
+        <div className="flex justify-center">
+          <PieChart data={overviewAllItems} identity={{ name: "All Items Sold" }} />
+        </div>
       </div>
     </div>
   );
