@@ -29,9 +29,9 @@ export const AreaVariant = ({ data }: Props) => {
           <YAxis />
           <CartesianGrid strokeDasharray={"3 3"} />
           <Tooltip content={<CustomTooltip />} />
+          <Area type="monotone" dataKey="totalPrice" stroke="#F60002" fillOpacity={1} fill="url(#totalPrice)" />
           <Area type="monotone" dataKey="totalSoldFood" stroke="#ffff00" fillOpacity={1} fill="url(#totalSoldFood)" />
           <Area type="monotone" dataKey="totalSoldDrink" stroke="#43EA46" fillOpacity={1} fill="url(#totalSoldDrink)" />
-          <Area type="monotone" dataKey="totalPrice" stroke="#F60002" fillOpacity={1} fill="url(#totalPrice)" />
         </AreaChart>
       </ResponsiveContainer>
     </>
