@@ -32,7 +32,6 @@ export default function MenuPage() {
   const overviewDrink = useMemo(() => transactions.data?.drink || [], [transactions.data]);
 
   const overviewAllItems = useMemo(() => transactions.data?.allitems || [], [transactions.data]);
-  console.log(overviewAllItems);
 
   const [soldMenu, setSoldMenu] = useState(0);
 
