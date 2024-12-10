@@ -80,13 +80,13 @@ export default function MenuPage() {
 
       <div className="grid md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4 mt-4  rounded-md ">
         <div className="flex justify-center">
-          <PieChart data={overviewFood} identity={{ name: "Food Sold" }} />
+          <PieChart disabled={transactions.isLoading} data={overviewFood} identity={{ name: "Food Sold" }} />
         </div>
         <div className="flex justify-center">
-          <PieChart data={overviewDrink} identity={{ name: "Drink Sold" }} />
+          <PieChart disabled={transactions.isLoading} data={overviewDrink} identity={{ name: "Drink Sold" }} />
         </div>
         <div className="flex justify-center">
-          <PieChart data={overviewAllItems} identity={{ name: "All Items Sold" }} />
+          <PieChart disabled={transactions.isLoading} data={overviewAllItems} identity={{ name: "All Items Sold" }} />
         </div>
       </div>
     </div>
