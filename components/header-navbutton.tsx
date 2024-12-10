@@ -22,7 +22,7 @@ export const NavButton = ({ href, label }: NavButtonProps) => {
                     pathName === href ? "bg-white/10 text-white" : "bg-transparent text-white"
                 )}
             >
-                <Link href={href}>{label}</Link>
+                <Link prefetch={true} href={href}>{label}</Link>
             </Button>
         </>
     )
