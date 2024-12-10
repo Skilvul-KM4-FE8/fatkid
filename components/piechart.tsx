@@ -47,7 +47,7 @@ export default function PieChartComponent({ data, identity }: PieChartProps) {
         <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[500px] pb-0 [&_.recharts-pie-label-text]:fill-foreground">
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-            <Pie data={chartData} dataKey="quantity" label nameKey="name" outerRadius={90} innerRadius={30} />
+            <Pie data={chartData} dataKey="quantity" label nameKey="name" outerRadius={120} innerRadius={40} />
           </PieChart>
         </ChartContainer>
       </CardContent>
