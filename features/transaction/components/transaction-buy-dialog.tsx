@@ -37,7 +37,6 @@ type OrderDataType = {
   totalPrice: number;
 };
 
-
 // interface PrintProps {
 //   authUser?: string; // Nama pengguna yang mencetak
 //   customerName: string; // Nama pelanggan
@@ -110,7 +109,6 @@ type OrderDataType = {
 //     </div>
 //   );
 // };
-
 
 const TransactionBuyDialog = () => {
   const { isOpen, onOpen, onClose, menu } = useBuyDialog();
@@ -198,19 +196,11 @@ const TransactionBuyDialog = () => {
     if (printWindow) {
       const printRoot = document.createElement("div");
       printWindow.document.body.appendChild(printRoot);
-  
-      ReactDOM.render(
-        <PrintContent
-          authUser={auth.user?.fullName || "Unknown"}
-          customerName={customerName}
-          menu={menuFix}
-          total={total}
-        />,
-        printRoot
-      );
-  
+
+      ReactDOM.render(<PrintContent authUser={auth.user?.fullName || "Unknown"} customerName={customerName} menu={menuFix} total={total} />, printRoot);
+
       // printWindow.document.close(); // Selesai menulis konten
-  
+
       // Tunggu sebentar untuk memastikan semua konten ter-load
       setTimeout(() => {
         printWindow.print();
@@ -338,8 +328,7 @@ const TransactionBuyDialog = () => {
                       Print
                     </Button> */}
                     <Button className="" variant="outline" type="button" onClick={() => handlePrint()}>
-                      Print
-
+                      Print Mobile
                     </Button>
                     {/* <PrintMobile authUser={auth.user?.fullName || "unknown"} customerName={customerName} menu={menuFix} total={total} /> */}
                   </div>
