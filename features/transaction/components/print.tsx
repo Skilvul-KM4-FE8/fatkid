@@ -47,7 +47,7 @@ TOTAL BAYAR  : Rp ${total.toLocaleString()}
 ${separator}
 UNTUK PEMESANAN HUBUNGI:
 0813-1805-3671 (WhatsApp)
-@fatkid.catering (Instagram)
+@Fatkid_Poffertjes (Instagram)
 ${"\n".repeat(1)}
 TERIMA KASIH TELAH BERBELANJA DI 
 FATKID CATERING!

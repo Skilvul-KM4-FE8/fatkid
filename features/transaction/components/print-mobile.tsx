@@ -23,8 +23,6 @@ export default function PrintMobile() {
     );
   };
 
-  
-
   const LinePrint = () => {
     return <div className="border-b-2 overflow-hidden -ml-7">===================================================================================================</div>;
   };
@@ -69,10 +67,8 @@ export default function PrintMobile() {
         </div>
         <div>
           <p className="text-center text-2xl">0813-1805-3671 (FATKID)</p>
-          <p className="text-center text-2xl">@fatkid.catering (Instagram)</p>
+          <p className="text-center text-2xl">@Fatkid.Poffertjes(Instagram)</p>
           <p className="text-center text-2xl">UNTUK PEMESANAN HUBUNGI :</p>
-          {/* <RowPrint left="0813-1805-3671 (FATKID)" right="" /> */}
-          {/* <RowPrint left="@fatkid.catering (Instagram)" right="" /> */}
         </div>
         <div className="mx-2 my-1 border-b-4">
           <LinePrint />

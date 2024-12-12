@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -22,7 +23,7 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
         boxSizing: "border-box",
       }}
     >
-      {/* Logo */}
+      {/* Header with Logo and Title */}
       <div style={{ textAlign: "center", paddingBottom: "10px" }}>
         <div
           style={{
@@ -34,17 +35,19 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
             alignItems: "center",
           }}
         >
-          <Image src="/Fatkid.png" height={70} alt="logo" /> FATKID CATERING
+          <Image src="/Fatkid.png" width={100} height={70} alt="logo" />
+          <br />
+          <div>FATKID CATERING</div>
         </div>
       </div>
 
-      {/* Informasi Kontak */}
+      {/* Contact Information */}
       <div style={{ textAlign: "center", borderBottom: "1px dashed #000", paddingBottom: "10px" }}>
-        <p style={{ margin: "0", fontSize: "40px" }}>Telp: 0813-1805-3671</p>
-        <p style={{ margin: "0", fontSize: "40px" }}>Instagram: @fatkid.catering</p>
+        <p style={{ margin: "0" }}>Telp: 0813-1805-3671</p>
+        <p style={{ margin: "0" }}>Instagram: @Fatkid.Poffertjes</p>
       </div>
 
-      {/* Info */}
+      {/* Order Details */}
       <div style={{ marginTop: "10px", marginBottom: "10px" }}>
         <p style={{ margin: "0" }}>
           <strong>Waiter:</strong> {authUser}
@@ -72,10 +75,7 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
             <div style={{ flex: "1", marginRight: "10px" }}>
               {item.name} <br /> ({item.quantity} x Rp{item.price.toLocaleString()})
             </div>
-            <div style={{ flexShrink: "0" }}>
-              {" "}
-              <br /> Rp{(item.quantity * item.price).toLocaleString()}
-            </div>
+            <div style={{ flexShrink: "0" }}>Rp{(item.quantity * item.price).toLocaleString()}</div>
           </div>
         ))}
       </div>
@@ -87,8 +87,8 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
 
       {/* Footer */}
       <div style={{ textAlign: "center", borderTop: "1px dashed #000", paddingTop: "10px" }}>
-        <p style={{ fontSize: "40px", margin: "0" }}>Terima kasih atas pembelian Anda!</p>
-        <p style={{ fontSize: "40px", margin: "0" }}>Semoga hari Anda menyenangkan!</p>
+        <p style={{ margin: "0" }}>Terima kasih atas pembelian Anda!</p>
+        <p style={{ margin: "0" }}>Semoga hari Anda menyenangkan!</p>
       </div>
     </div>
   );
