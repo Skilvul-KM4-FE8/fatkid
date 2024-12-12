@@ -25,20 +25,11 @@ export const PrintContent: React.FC<PrintProps> = ({ authUser, customerName, men
     >
       {/* Header with Logo and Title */}
       <div style={{ textAlign: "center", paddingBottom: "10px" }}>
-        <div
-          style={{
-            fontSize: "40px",
-            fontWeight: "bold",
-            marginBottom: "5px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <div>
           <Image src="/Fatkid.png" width={100} height={70} alt="logo" />
-          <br />
-          <div>FATKID CATERING</div>
         </div>
+        <br />
+        <div>FATKID CATERING</div>
       </div>
 
       {/* Contact Information */}
